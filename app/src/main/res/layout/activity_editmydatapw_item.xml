@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#FFFFB4"
+    android:padding="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtEditTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="修改密碼"
+        android:textSize="25dp"
+        android:textColor="#143C8C"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/txtEditOPWItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="舊密碼"
+            android:textSize="25dp"
+            android:textColor="#143C8C"/>
+
+        <EditText
+            android:id="@+id/edtEditOPWItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:background="#FBB03B"
+            android:singleLine="true"
+            android:ems="14"
+            android:maxLength="14"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/txtEditNPWItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="新密碼"
+            android:textSize="25dp"
+            android:textColor="#143C8C"/>
+
+        <EditText
+            android:id="@+id/edtEditNPWItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:background="#FBB03B"
+            android:singleLine="true"
+            android:ems="14"
+            android:maxLength="14"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/txtEditCKNPWItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="確認新密碼"
+            android:textSize="25dp"
+            android:textColor="#143C8C"/>
+
+        <EditText
+            android:id="@+id/edtEditCKNPWItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:background="#FBB03B"
+            android:singleLine="true"
+            android:ems="14"
+            android:maxLength="14"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/btnEditPWCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="取消"
+                android:textSize="25dp"
+                android:background="@drawable/btn_shape"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/btnEditPWOK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="確認"
+                android:textSize="25dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/btn_shape"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

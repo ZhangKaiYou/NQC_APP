@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+   <LinearLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:gravity="center_vertical">
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="學年度："
+           android:textSize="20dp"
+           android:textColor="#000000"/>
+
+       <Spinner
+           android:id="@+id/spnAttendYear"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:background="#40BEB5"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="學期："
+            android:textSize="20dp"
+            android:textColor="#000000"/>
+
+        <Spinner
+            android:id="@+id/spnAttendSemester"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#40BEB5"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtShowAttend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="目前清單顯示狀態：顯示全部"
+        android:textColor="#000000"
+        android:textSize="20dp"/>
+    <ListView
+        android:id="@+id/lstAttnedList"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:divider="#40BEB5"
+        android:layout_marginTop="5dp"
+        android:dividerHeight="1dp"
+        android:padding="5dp">
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/btnAttendShowAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="顯示全部"
+                android:textSize="20dp"
+                android:background="#40BEB5"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/btnAttendGetClassList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="取得課程資訊"
+                android:padding="10dp"
+                android:textSize="20dp"
+                android:background="#40BEB5"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

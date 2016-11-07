@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.nqc_app">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.NFC" />
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".HomePage">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:label="NQC" android:name=".FunctionPage" android:parentActivityName=".HomePage"/>
+        <activity android:label="NFCPage" android:name=".NFC_ClockFunction_Page" android:parentActivityName=".FunctionPage">
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity>
+        <activity android:label="關於我們" android:name=".AboutPage" android:parentActivityName=".FunctionPage" />
+        <activity android:label="我的資料" android:name=".MyDataPage"  android:parentActivityName=".FunctionPage" />
+        <activity android:label="聯絡我們" android:name=".ContactUsPage" android:parentActivityName=".AboutPage" android:windowSoftInputMode="stateHidden" />
+        <activity android:label="修改我的資料" android:name=".EditMyDataPage" android:parentActivityName=".MyDataPage" android:windowSoftInputMode="stateHidden"/>
+        <activity android:label="ShowAttendPage" android:name=".ShowMyAttendPage"  android:parentActivityName=".MyDataPage"/>
+        <activity android:label="登入 Log in" android:name=".LoginPage"  android:parentActivityName=".MainPage" android:windowSoftInputMode="stateHidden"/>
+        <activity android:label="註冊 Sign up" android:name=".SignUpPage"  android:parentActivityName=".MainPage" android:windowSoftInputMode="stateHidden"/>s
+        <activity android:label="MainPage" android:name=".MainPage"  android:parentActivityName=".HomePage"/>
+    </application>
+
+</manifest>

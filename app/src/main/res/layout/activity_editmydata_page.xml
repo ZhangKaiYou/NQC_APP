@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#FFFFB4"
+    android:padding="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtEditMyDataStudentID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="學號"
+                android:textSize="25dp"
+                android:textColor="#143C8C"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/txtEditMyDataPW"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="密碼"
+                    android:textSize="25dp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="#143C8C"/>
+
+                <Button
+                    android:id="@+id/btnEditMyDataPW"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/btn_shape"
+                    android:text="修改密碼"
+                    android:textSize="25dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/txtEditMyDataName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:text="姓名"
+                    android:textSize="25dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="#143C8C"/>
+
+                <EditText
+                    android:id="@+id/edtEditMyDataName"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="25dp"
+                    android:background="#FBB03B"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:maxLength="10" />
+
+                <RadioGroup
+                    android:id="@+id/rdgroupEditMyDataGender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rdbtnEditMyDataMan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#143C8C"
+                        android:text="男"
+                        android:textSize="20dp"/>
+
+                    <RadioButton
+                        android:id="@+id/rdbtnEditMyDataWoman"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#143C8C"
+                        android:text="女"
+                        android:textSize="20dp"/>
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/txtEditMyDataDepartment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="系別"
+                    android:textSize="25dp"
+                    android:textColor="#143C8C"/>
+
+                <Spinner
+                    android:id="@+id/spnEditMyDataDepartment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:popupBackground="#FBB03B"
+                    android:background="#FBB03B"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/txtEditMyDataClass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="班級"
+                    android:textSize="25dp"
+                    android:textColor="#143C8C"/>
+
+                <EditText
+                    android:id="@+id/edtEditMyDataClass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="25dp"
+                    android:background="#FBB03B"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:maxLength="6" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/txtEditMyDataStatue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="身份"
+                    android:textSize="25dp"
+                    android:textColor="#143C8C"/>
+
+                <Spinner
+                    android:id="@+id/spnEditMyDataStatue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:popupBackground="#FBB03B"
+                    android:background="#FBB03B"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/txtEditMyDataStudentEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:text="信箱"
+                    android:textSize="25dp"
+                    android:textColor="#143C8C"/>
+
+                <EditText
+                    android:id="@+id/edtEditMyDataStudentEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="25dp"
+                    android:background="#FBB03B"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:inputType="textEmailAddress"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/btnEditMyDataCancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btnrefill"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="30dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/btnEditMyDataOK"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/btnconfirm"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
