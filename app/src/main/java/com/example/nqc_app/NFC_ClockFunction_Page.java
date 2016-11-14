@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by USER on 2016/7/21.
@@ -71,7 +72,7 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
 
         //全域資料變數建立
         String UserID,UserName,UserStatue;
-        String ClassRoomArea = null, ClassIDArea = null ,ClassNameArea = null,ClassRoomIDArea = null,AttendStatudArea = null;
+        String ClassRoomArea , ClassIDArea = null ,ClassNameArea = null,ClassRoomIDArea = null,AttendStatudArea = null;
         int ClassTimeHHArea, ClassTimeMMArea,ClassLongArea,ClassWeekArea;
 
         //課程資料二維陣列建立
@@ -97,7 +98,6 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
             dbGetUserClassList.execute(""); //執行課程資料取得功能
             initNFC(); //執行建立NFC資落傳遞類別
             checkNFCFunction(); //檢查NFC功能是否正常
-//            initFunction(); //執行傳輸NFC功能
     }
 
     //按鈕監聽
@@ -181,23 +181,27 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
 
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-            if(UserStatue.equals("學生")){
-                Toast.makeText(NFC_ClockFunction_Page.this,"身份錯誤，無法使用此功能!",Toast.LENGTH_SHORT).show();
-                tgbtnNFCTag.setChecked(false);
-                initNFCP2P = false;
-            }else {
-                if(isChecked) //當按鈕狀態為選取時
-                {
-                    initNFCP2P = true;
-                    Toast.makeText(NFC_ClockFunction_Page.this,"臨時標籤功能開啟!",Toast.LENGTH_SHORT).show();
-                }
-                else //當按鈕狀態為未選取時
-                {
+            try{
+                if(UserStatue.equals("學生")){
+                    Toast.makeText(NFC_ClockFunction_Page.this,"身份錯誤，無法使用此功能!",Toast.LENGTH_SHORT).show();
+                    tgbtnNFCTag.setChecked(false);
                     initNFCP2P = false;
-                    Toast.makeText(NFC_ClockFunction_Page.this,"臨時標籤功能關閉!",Toast.LENGTH_SHORT).show();
-
+                }else {
+                    if(isChecked == true) //當按鈕狀態為選取時
+                    {
+                        initNFCP2P = true;
+                        Toast.makeText(NFC_ClockFunction_Page.this,"臨時標籤功能開啟!",Toast.LENGTH_SHORT).show();
+                        initFunction();
+                    }
+                    else //當按鈕狀態為未選取時
+                    {
+                        initNFCP2P = false;
+                        Toast.makeText(NFC_ClockFunction_Page.this,"臨時標籤功能關閉!",Toast.LENGTH_SHORT).show();
+                        initFunction();
+                    }
                 }
-                initFunction();
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
     };
@@ -212,6 +216,8 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
             mNfcAdapter.setNdefPushMessage(message,NFC_ClockFunction_Page.this);
             Toast.makeText(NFC_ClockFunction_Page.this,"已傳遞資料!",Toast.LENGTH_SHORT).show();
         }else {
+            NdefMessage message = BobNdefMessage.getNdefMsg_from_RTD_TEXT("身分錯誤!",false,false);
+            mNfcAdapter.setNdefPushMessage(message,NFC_ClockFunction_Page.this);
             Toast.makeText(NFC_ClockFunction_Page.this,"請開啟臨時標籤功能!",Toast.LENGTH_SHORT).show();
         }
     }

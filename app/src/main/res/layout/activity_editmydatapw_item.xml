@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="#FFFFB4"
+    android:background="#282828"
     android:padding="15dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -13,7 +13,7 @@
         android:layout_marginBottom="10dp"
         android:text="修改密碼"
         android:textSize="25dp"
-        android:textColor="#143C8C"/>
+        android:textColor="#ffffff"/>
 
 
     <LinearLayout
@@ -28,14 +28,14 @@
             android:layout_marginRight="10dp"
             android:text="舊密碼"
             android:textSize="25dp"
-            android:textColor="#143C8C"/>
+            android:textColor="#ffffff"/>
 
         <EditText
             android:id="@+id/edtEditOPWItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="25dp"
-            android:background="#FBB03B"
+            android:background="@drawable/btn_shape"
             android:singleLine="true"
             android:ems="14"
             android:maxLength="14"/>
@@ -54,14 +54,14 @@
             android:layout_marginRight="10dp"
             android:text="新密碼"
             android:textSize="25dp"
-            android:textColor="#143C8C"/>
+            android:textColor="#ffffff"/>
 
         <EditText
             android:id="@+id/edtEditNPWItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="25dp"
-            android:background="#FBB03B"
+            android:background="@drawable/btn_shape"
             android:singleLine="true"
             android:ems="14"
             android:maxLength="14"/>
@@ -80,14 +80,14 @@
             android:layout_marginRight="10dp"
             android:text="確認新密碼"
             android:textSize="25dp"
-            android:textColor="#143C8C"/>
+            android:textColor="#ffffff"/>
 
         <EditText
             android:id="@+id/edtEditCKNPWItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="25dp"
-            android:background="#FBB03B"
+            android:background="@drawable/btn_shape"
             android:singleLine="true"
             android:ems="14"
             android:maxLength="14"/>
