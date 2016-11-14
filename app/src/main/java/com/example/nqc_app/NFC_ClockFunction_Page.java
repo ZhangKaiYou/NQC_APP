@@ -2,6 +2,7 @@ package com.example.nqc_app;
 
 
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.nfc.NdefMessage;
@@ -11,9 +12,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -26,8 +32,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.nqc_app.NFCFunction.util.BobNdefMessage;
-import com.example.nqc_app.NFCFunction.util.ClassRoomTag;
-import com.example.nqc_app.NFCFunction.util.ClassRoomTagConverter;
+import com.example.nqc_app.util.ActionBarTitle;
 import com.example.nqc_app.util.ConnectionClass;
 
 import java.io.UnsupportedEncodingException;
@@ -71,9 +76,11 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
 
         //課程資料二維陣列建立
         List<Map<String,String>> ClassListADA = new ArrayList<Map<String,String>>();
-
+        //判斷能否開啟NFCP2P功能
         Boolean initNFCP2P = false;
-        String ClassRoomAreaA = "藝407";
+
+        //建立標題Bar類別
+        private ActionBarTitle actionBarTitle;
 
         @Override
         protected void onCreate(Bundle savedInstanceState){
@@ -83,11 +90,14 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
             preferences = getSharedPreferences("UserData",MODE_PRIVATE); //取得內部儲存檔案
             initUI(); //執行建立UI元件指向變數類別
             readUserData(); //讀取使用者資料
+            ActionBar actionBar = getSupportActionBar(); //取得ActionBar
+            actionBar.setDefaultDisplayHomeAsUpEnabled(true);
+            ActionBarTitle.applyFont(actionBar,this,this.getTitle().toString()); //執行ActionBarTilte
             DBGetUserClassList dbGetUserClassList = new DBGetUserClassList(); //取得課程資料功能類別建立
             dbGetUserClassList.execute(""); //執行課程資料取得功能
             initNFC(); //執行建立NFC資落傳遞類別
             checkNFCFunction(); //檢查NFC功能是否正常
-            initFunction();
+//            initFunction(); //執行傳輸NFC功能
     }
 
     //按鈕監聽
@@ -173,21 +183,21 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
             if(UserStatue.equals("學生")){
                 Toast.makeText(NFC_ClockFunction_Page.this,"身份錯誤，無法使用此功能!",Toast.LENGTH_SHORT).show();
+                tgbtnNFCTag.setChecked(false);
                 initNFCP2P = false;
-                initFunction();
             }else {
                 if(isChecked) //當按鈕狀態為選取時
                 {
                     initNFCP2P = true;
                     Toast.makeText(NFC_ClockFunction_Page.this,"臨時標籤功能開啟!",Toast.LENGTH_SHORT).show();
-                    initFunction();
                 }
                 else //當按鈕狀態為未選取時
                 {
                     initNFCP2P = false;
                     Toast.makeText(NFC_ClockFunction_Page.this,"臨時標籤功能關閉!",Toast.LENGTH_SHORT).show();
-                    initFunction();
+
                 }
+                initFunction();
             }
         }
     };
@@ -198,7 +208,7 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
 
     private void initFunction(){
         if(initNFCP2P){
-            NdefMessage message = BobNdefMessage.getNdefMsg_from_RTD_TEXT(ClassRoomAreaA,false,false);
+            NdefMessage message = BobNdefMessage.getNdefMsg_from_RTD_TEXT(ClassRoomArea,false,false);
             mNfcAdapter.setNdefPushMessage(message,NFC_ClockFunction_Page.this);
             Toast.makeText(NFC_ClockFunction_Page.this,"已傳遞資料!",Toast.LENGTH_SHORT).show();
         }else {
@@ -517,5 +527,58 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
                 return true;
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //設定Menu內容
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_item, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            //點擊AboutUsMenuItem
+            case R.id.action_AboutUs:
+                Intent intent = new Intent();
+                intent.setClass(NFC_ClockFunction_Page.this,AboutPage.class);
+                startActivity(intent);
+                break;
+            //點擊LogOutMenuItem
+            case R.id.action_LogOut:
+                new AlertDialog.Builder(NFC_ClockFunction_Page.this)
+                        .setTitle("登出")
+                        .setMessage("確認是否要登出!?")
+                        .setPositiveButton("確定", new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialoginterface, int i) {
+                                preferences.edit().clear().commit();
+                                Intent intentHome = new Intent();
+                                intentHome.setClass(NFC_ClockFunction_Page.this,HomePage.class);
+                                startActivity(intentHome);
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        })
+                        .show();
+                break;
+            //點擊ContactUsMenuItem
+            case R.id.action_ContactUs:
+                Intent intentContactUs = new Intent();
+                intentContactUs.setClass(NFC_ClockFunction_Page.this,ContactUsPage.class);
+                startActivity(intentContactUs);
+                break;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 }

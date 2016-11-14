@@ -1,125 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="#FFFFB4"
+    android:background="#282828"
     android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="回報中心信箱"
+            android:layout_marginRight="10dp"
+            android:textColor="#ffffff"
+            android:textSize="30sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/txtContactUsUserID"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="學號："
-                android:textSize="25dp"
-                android:textColor="#143C8C"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txtContactUsUserName"
-                android:layout_width="match_parent"
+                android:id="@+id/txtquestionclass"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="姓名："
-                android:textSize="25dp"
-                android:textColor="#143C8C"/>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
                 android:text="問題類別"
-                android:textSize="20dp"
-                android:textColor="#143C8C"/>
+                android:textColor="#ffffff"
+                android:textSize="30sp" />
 
             <Spinner
                 android:id="@+id/spnContactusKind"
-                android:layout_width="250dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:popupBackground="#FBB03B"
-                android:background="#FBB03B"/>
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="主旨："
-                android:textSize="20dp"
-                android:textColor="#143C8C"/>
+                android:layout_weight="1"
+                android:background="@drawable/btn_shape"
+                android:popupBackground="#5D5D5D" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:text="主旨"
+                android:textColor="#ffffff"
+                android:textSize="30dp" />
 
             <EditText
                 android:id="@+id/edtContactUsTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="25dp"
-                android:hint="問題主旨..."
-                android:background="#FBB03B"
+                android:background="@drawable/btn_shape"
                 android:maxLines="1"
-                android:singleLine="true"/>
+                android:textSize="25sp"
+                android:layout_marginTop="12dp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="回應內容："
-                android:textSize="20dp"
-                android:textColor="#143C8C"/>
+        </LinearLayout>
 
-            <EditText
-                android:id="@+id/edtContactUsDetail"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
-                android:scrollbars="vertical"
-                android:gravity="left"
-                android:singleLine="false"
-                android:background="#FBB03B"
-                android:hint="請輸入想對我們說的話..."
-                android:lines="10"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="信件內容"
+            android:textColor="#ffffff"
+            android:textSize="30sp"/>
+
+        <EditText
+            android:id="@+id/edtContactUsDetail"
+            android:layout_width="match_parent"
+            android:gravity="top"
+            android:layout_height="190dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_shape"
+            android:textColor="#ffffff"
+            android:textSize="30sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/btnContactUsClear"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/btnrefill"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="30dp" />
-                </LinearLayout>
+                <Button
+                    android:id="@+id/btnContactUsClear"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/del" />
+            </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/btnContactUsSend"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="30dp"
-                        android:background="@drawable/btnconfirm"/>
-                </LinearLayout>
+                <Button
+                    android:id="@+id/btnContactUsSend"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/sent" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 </LinearLayout>

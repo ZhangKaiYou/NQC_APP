@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:padding="10dp"
+    android:background="#282828"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,13 +12,13 @@
         android:layout_height="wrap_content"
         android:text="課程清單："
         android:textSize="25dp"
-        android:textColor="#000000"/>
+        android:textColor="#FFFFFF"/>
 
     <ListView
         android:id="@+id/lstClassList"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:divider="#40BEB5"
+        android:divider="#143c8c"
         android:layout_marginTop="5dp"
         android:dividerHeight="1dp"
         android:padding="5dp">
@@ -40,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="取消"
                 android:textSize="25dp"
-                android:background="#40BEB5"
+                android:background="@drawable/btn_shape2"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp" />
         </LinearLayout>
@@ -59,7 +60,7 @@
                 android:text="確認"
                 android:textSize="25dp"
                 android:layout_marginTop="10dp"
-                android:background="#40BEB5"/>
+                android:background="@drawable/btn_shape2"/>
         </LinearLayout>
     </LinearLayout>
 

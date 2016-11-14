@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="#FFFFB4"
+    android:background="#282828"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp">
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="軟體名稱：NQC_APP"
         android:textSize="20dp"
-        android:textColor="#000000"/>
+        android:textColor="#ffffff"/>
 
     <TextView
         android:id="@+id/txtAboutUsVersion"
@@ -20,7 +20,7 @@
         android:layout_marginTop="15dp"
         android:text="軟體版本：1.0"
         android:textSize="20dp"
-        android:textColor="#000000"/>
+        android:textColor="#ffffff"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -28,14 +28,14 @@
         android:layout_marginTop="15dp"
         android:text="支援版本：Android 4.0 (API14)以上"
         android:textSize="20dp"
-        android:textColor="#000000"/>
+        android:textColor="#ffffff"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="所需功能：NFC、Beam、相機功能"
-        android:textColor="#000000"
+        android:textColor="#ffffff"
         android:textSize="20dp"/>
 
     <TextView
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="開發團隊：102北商夜資四甲NQC開發組"
-        android:textColor="#000000"
+        android:textColor="#ffffff"
         android:textSize="20dp"/>
 
     <TextView
@@ -51,22 +51,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="開發學校：國立臺北商業大學"
-        android:textColor="#000000"
+        android:textColor="#ffffff"
         android:textSize="20dp"/>
-
-    <View
-        android:layout_width="800px"
-        android:layout_height="5px"
-        android:background="#E9266A"
-        android:layout_marginTop="24px" />
-
-    <Button
-        android:id="@+id/btnToContactUsPage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="聯絡我們"
-        android:textSize="20dp"
-        android:background="@drawable/btn_shape"/>
-
 </LinearLayout>

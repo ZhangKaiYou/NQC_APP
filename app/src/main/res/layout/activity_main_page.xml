@@ -2,16 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFB4"
+    android:padding="10dp"
+    android:background="#282828"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/imgLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:src="@drawable/nqcrollcall"
-        android:textSize="60dp" />
+        android:layout_gravity="center"
+        android:src="@drawable/rollcall"/>
 
     <Button
         android:id="@+id/btnToLoginPage"

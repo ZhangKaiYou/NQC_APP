@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="#FFFFB4"
+    android:background="#282828"
     android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -21,19 +21,20 @@
 
             <Button
                 android:id="@+id/btnToNFCPage"
-                android:layout_width="155dp"
-                android:layout_height="150dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
                 android:layout_marginRight="30dp"
+                android:layout_margin="10dp"
                 android:layout_weight="0.3"
-                android:background="@drawable/nfcp2p" />
+                android:background="@drawable/enterrollcall" />
 
             <Button
-
                 android:id="@+id/btnToQRCodePage"
-                android:layout_width="155dp"
-                android:layout_height="150dp"
+                android:layout_width="98dp"
+                android:layout_height="130dp"
+                android:layout_margin="10dp"
                 android:layout_weight="0.3"
-                android:background="@drawable/nfcp2t"/>
+                android:background="@drawable/logout"/>
 
     </LinearLayout>
             <Button

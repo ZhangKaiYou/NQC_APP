@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="#282828"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp">
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/txtNFCStudentID"
@@ -12,7 +13,7 @@
         android:text="學號"
         android:layout_marginBottom="10dp"
         android:textSize="25dp"
-        android:textColor="#000000"/>
+        android:textColor="#FFFFFF"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -26,7 +27,7 @@
             android:layout_marginBottom="10dp"
             android:text="姓名"
             android:textSize="25dp"
-            android:textColor="#000000"/>
+            android:textColor="#FFFFFF"/>
 
         <RadioGroup
             android:id="@+id/rdgroupNFCCheck"
@@ -38,7 +39,7 @@
                 android:id="@+id/rdbtnNFCCheckIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#143C8C"
+                android:textColor="#FFFFFF"
                 android:checked="true"
                 android:text="簽到"
                 android:textSize="20dp"/>
@@ -47,7 +48,7 @@
                 android:id="@+id/rdbtnNFCCheckOut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#143C8C"
+                android:textColor="#FFFFFF"
                 android:text="簽退"
                 android:textSize="20dp"/>
         </RadioGroup>
@@ -67,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textSize="25dp"
-            android:textColor="#000000"/>
+            android:textColor="#FFFFFF"/>
 
         <Button
             android:id="@+id/btnGetClassList"
@@ -78,7 +79,8 @@
             android:layout_gravity="center_horizontal"
             android:text="取得課堂資訊"
             android:textSize="20dp"
-            android:background="#40BEB5"/>
+            android:textColor="#FFFFFF"
+            android:background="@drawable/btn_shape2"/>
 
     </LinearLayout>
     <TextView
@@ -88,7 +90,7 @@
         android:text="課程名稱："
         android:layout_marginBottom="10dp"
         android:textSize="25dp"
-        android:textColor="#000000"/>
+        android:textColor="#FFFFFF"/>
 
     <TextView
         android:id="@+id/txtNFCClassRoom"
@@ -97,7 +99,7 @@
         android:text="上課地點："
         android:layout_marginBottom="10dp"
         android:textSize="25dp"
-        android:textColor="#000000"/>
+        android:textColor="#FFFFFF"/>
 
     <TextView
         android:id="@+id/txtNFCClassTime"
@@ -106,7 +108,7 @@
         android:text="上課時間："
         android:layout_marginBottom="10dp"
         android:textSize="25dp"
-        android:textColor="#000000"/>
+        android:textColor="#FFFFFF"/>
 
     <TextView
         android:id="@+id/txtNFCClassRoomClock"
@@ -115,7 +117,7 @@
         android:text="簽到地點："
         android:layout_marginBottom="10dp"
         android:textSize="25dp"
-        android:textColor="#000000"/>
+        android:textColor="#FFFFFF"/>
 
     <TextView
         android:id="@+id/txtNFCClassTimeClock"
@@ -124,7 +126,7 @@
         android:text="簽到時間："
         android:layout_marginBottom="10dp"
         android:textSize="25dp"
-        android:textColor="#000000"/>
+        android:textColor="#FFFFFF"/>
 
     <TextView
         android:id="@+id/txtNFCAttendStatue"
@@ -133,13 +135,13 @@
         android:text="簽到狀態："
         android:layout_marginBottom="10dp"
         android:textSize="25dp"
-        android:textColor="#000000"/>
+        android:textColor="#FFFFFF"/>
 
     <View
         android:id="@+id/view"
         android:layout_width="800px"
         android:layout_height="5px"
-        android:background="#40BEB5"
+        android:background="#143c8c"
         android:layout_marginTop="24px" />
 
     <TextView
@@ -147,7 +149,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textSize="25dp"
-        android:textColor="#111111"
+        android:textColor="#FFFFFF"
         android:text="請感應NFC相關設備簽到!"/>
 
     <LinearLayout
@@ -166,7 +168,8 @@
                 android:layout_height="wrap_content"
                 android:text="清除"
                 android:textSize="25dp"
-                android:background="#40BEB5"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_shape2"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp" />
         </LinearLayout>
@@ -186,8 +189,9 @@
                 android:textOn="臨時標籤(開)"
                 android:textSize="20dp"
                 android:layout_marginTop="10dp"
+                android:textColor="#FFFFFF"
                 android:padding="5dp"
-                android:background="#40BEB5"/>
+                android:background="@drawable/btn_shape2"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
