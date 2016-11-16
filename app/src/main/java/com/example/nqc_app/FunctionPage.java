@@ -62,6 +62,13 @@ public class FunctionPage extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 }
+
+                //跳轉查詢學習時數
+                case R.id.btnToShowClassHrsPage:
+                    Intent intentClassHrs = new Intent();
+                    intentClassHrs.setClass(FunctionPage.this,ShowClassHoursPage.class);
+                    startActivity(intentClassHrs);
+                    break;
             }
         }
     };
@@ -70,13 +77,13 @@ public class FunctionPage extends AppCompatActivity {
     public void initUI(){
         //將Button指向變數
         Button btnToNFCPage = (Button)findViewById(R.id.btnToNFCPage);
-        Button btnToQRCodePage = (Button)findViewById(R.id.btnToQRCodePage);
+        Button btnToShowClassHrsPage = (Button)findViewById(R.id.btnToShowClassHrsPage);
         Button btnToAboutPage = (Button)findViewById(R.id.btnToAboutPage);
         Button btnToMyDataPage = (Button)findViewById(R.id.btnToMyDataPage);
 
         //建立按鈕監聽方法
         btnToNFCPage.setOnClickListener(btnListener);
-        btnToQRCodePage.setOnClickListener(btnListener);
+        btnToShowClassHrsPage.setOnClickListener(btnListener);
         btnToAboutPage.setOnClickListener(btnListener);
         btnToMyDataPage.setOnClickListener(btnListener);
     }

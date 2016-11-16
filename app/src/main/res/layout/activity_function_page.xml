@@ -29,7 +29,7 @@
                 android:background="@drawable/enterrollcall" />
 
             <Button
-                android:id="@+id/btnToQRCodePage"
+                android:id="@+id/btnToShowClassHrsPage"
                 android:layout_width="98dp"
                 android:layout_height="130dp"
                 android:layout_margin="10dp"

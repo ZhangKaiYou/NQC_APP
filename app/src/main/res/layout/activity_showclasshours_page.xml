@@ -18,7 +18,7 @@
            android:textColor="#ffffff"/>
 
        <Spinner
-           android:id="@+id/spnAttendYear"
+           android:id="@+id/spnClassHrsYear"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:background="@drawable/btn_shape"/>
@@ -32,24 +32,34 @@
             android:textColor="#ffffff"/>
 
         <Spinner
-            android:id="@+id/spnAttendSemester"
+            android:id="@+id/spnClassHrsSemester"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_shape"/>
     </LinearLayout>
 
     <TextView
-        android:id="@+id/txtShowAttend"
+        android:id="@+id/txtShowClassHrs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="目前清單顯示狀態：顯示全部"
         android:textColor="#ffffff"
         android:textSize="20dp"/>
-    <ListView
-        android:id="@+id/lstAttnedList"
+
+    <TextView
+        android:id="@+id/txtShowClassHrsValue"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="目前學習時數顯示狀態：顯示全部"
+        android:textColor="#ffffff"
+        android:textSize="20dp"/>
+
+    <ListView
+        android:id="@+id/lstClassHrsList"
+        android:layout_width="match_parent"
+        android:layout_height="340dp"
         android:divider="#143c8c"
         android:layout_marginTop="5dp"
         android:dividerHeight="1dp"
@@ -67,7 +77,7 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/btnAttendShowAll"
+                android:id="@+id/btnClassHrsShowAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="顯示全部"
@@ -84,13 +94,13 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/btnAttendGetClassList"
+                android:id="@+id/btnClassHrsGetClassList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="取得課程資訊"
-                android:padding="10dp"
                 android:textSize="20dp"
                 android:background="@drawable/btn_shape"
+                android:padding="10dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp" />
         </LinearLayout>

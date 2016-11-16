@@ -49,7 +49,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by USER on 2016/7/21.
@@ -143,7 +142,7 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
                             ClassTimeH[0] = obj.get("上課時間時");
                             ClassTimeM[0] = obj.get("上課時間分");
                             ClassNameArea = obj.get("課程名稱");
-                            ClassIDArea = obj.get("課程代號");
+                            ClassIDArea = obj.get("課程編號");
                             ClassTimeHHArea = Integer.parseInt(obj.get("上課時間時"));
                             ClassTimeMMArea = Integer.parseInt(obj.get("上課時間分"));
                             ClassWeekArea = Integer.parseInt(obj.get("星期"));
@@ -475,15 +474,16 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
                     z = "伺服器連接失敗!";
                 }else {
                     //SQL查詢指令
-                    String query = "select 課程資訊.*,教室資訊.*,課程學生清單.*" +
-                            "from 課程資訊,課程學生清單,教室資訊 where 教室資訊.教室編號 = 課程資訊.上課地點  and   課程資訊.課程代號 = 課程學生清單.課程代號 and 課程學生清單.學生代碼 ='" + UserID + "'";
+                    String query = "select 課程資訊.*,課程學生清單.*,教室資訊.* " +
+                            "from 課程資訊,課程學生清單,教室資訊" +
+                            " where 教室資訊.教室編號 = 課程資訊.上課地點 and 課程資訊.課程編號 = 課程學生清單.課程編號 and 課程學生清單.學生代號 ='" + UserID + "'";
                     //DB資料取得
                     PreparedStatement ps = con.prepareStatement(query);
                     ResultSet rs = ps.executeQuery();
                     //DB各項資料裝箱至ClassListInfo
                     while (rs.next()) {
                         Map<String,String> ClassListInfo = new HashMap<String, String>();
-                        ClassListInfo.put("課程代號",rs.getString("課程代號"));
+                        ClassListInfo.put("課程編號",rs.getString("課程編號"));
                         ClassListInfo.put("課程名稱",rs.getString("課程名稱"));
                         ClassListInfo.put("上課時間時",rs.getString("上課時間時"));
                         ClassListInfo.put("上課時間分",rs.getString("上課時間分"));
