@@ -50,13 +50,15 @@ public class ShowClassHoursPage extends AppCompatActivity {
     TextView txtShowClassHrs,txtShowClassHrsValue;
     ListView listClassHrs;
     Spinner spnClassHrsYear,spnClassHrsSemester;
-    String UserID,ClassIDArea;
+    String UserID,ClassIDArea,ClassNameArea;
+    int ClassHrsSelectSum;
 
     //課程資料二維陣列建立
     List<Map<String,String>> ClassListADA = new ArrayList<Map<String,String>>();
     //總學習時數資料二維陣列建立
     List<Map<String,String>> ClassHrsAllADA = new ArrayList<Map<String,String>>();
-
+    //總學習時數資料二維陣列建立
+    List<Map<String,String>> ClassHrsSelectADA = new ArrayList<Map<String,String>>();
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -131,6 +133,7 @@ public class ShowClassHoursPage extends AppCompatActivity {
                             txtClassItemTitle.setText("你選擇了：" + obj.get("課程名稱"));
                             ClassIDArea = obj.get("課程編號");
                             ShowClass[0] = obj.get("課程名稱");
+                            ClassNameArea = obj.get("課程名稱");
                         }
                     });
                     //清單按鈕點選監聽
@@ -138,8 +141,9 @@ public class ShowClassHoursPage extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             txtShowClassHrs.setText("你目前選擇的課程：" + ShowClass[0]);
-//                            DBGetUserSelectClassList dbGetUserSelectClassList = new DBGetUserSelectClassList();
-//                            dbGetUserSelectClassList.execute("");
+                            ClassHrsSelectADA.clear();
+                            DBGetClassHrsSelect dbGetClassHrsSelect = new DBGetClassHrsSelect();
+                            dbGetClassHrsSelect.execute("");
                             dialogBuilder.cancel();
                         }
                     });
@@ -154,6 +158,11 @@ public class ShowClassHoursPage extends AppCompatActivity {
                     dialogBuilder.show();
                     break;
 
+                case R.id.btnClassHrsShowAll:
+                    DBGetClassHrsAll dbGetClassHrsAll = new DBGetClassHrsAll();
+                    dbGetClassHrsAll.execute("");
+                    txtShowClassHrsValue.setText("目前清單顯示狀態：顯示全部(分鐘)");
+                    break;
             }
         }
     };
@@ -162,8 +171,10 @@ public class ShowClassHoursPage extends AppCompatActivity {
 
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            DBGetUserClassList dbGetUserClassList = new DBGetUserClassList(); //取得課程資料功能類別建立
-            dbGetUserClassList.execute(""); //執行課程資料取得功能
+//            DBGetUserClassList dbGetUserClassList = new DBGetUserClassList(); //取得課程資料功能類別建立
+//            dbGetUserClassList.execute(""); //執行課程資料取得功能
+//            DBGetClassHrsAll dbGetClassHrsAll = new DBGetClassHrsAll();
+//            dbGetClassHrsAll.execute("");
         }
 
         @Override
@@ -203,7 +214,12 @@ public class ShowClassHoursPage extends AppCompatActivity {
         @Override
         protected void onPostExecute(String z){
             Toast.makeText(ShowClassHoursPage.this,z,Toast.LENGTH_SHORT).show();
-            Toast.makeText(ShowClassHoursPage.this,ClassHrsAllADA.toString(),Toast.LENGTH_SHORT).show();
+            int[] AttendListView = {R.id.txtShowAttendListDay,R.id.txtShowAttendListStatue}; //設定顯示清單元件
+            String[] from2 = {"課程名稱","總時數"};
+            SimpleAdapter ShowClassHrsList = new SimpleAdapter(ShowClassHoursPage.this,ClassHrsAllADA,R.layout.activity_showattendlist_itme,from2,AttendListView); //設定資料陣列
+            //設定陣列指向
+            listClassHrs.setAdapter(ShowClassHrsList);
+            ShowClassHrsList.notifyDataSetChanged();
         }
 
         @Override
@@ -213,26 +229,91 @@ public class ShowClassHoursPage extends AppCompatActivity {
                 if(con == null){
                     z = "伺服器連接失敗!";
                 }else {
-                    String query = "Select 學生代號,Sum(時數) As 總時數 From 學習時數 Where  學生代號 ='" + UserID + "' Group By 學生代號";
+                    String query = "Select  課程代號,課程名稱, Sum(學習時數) As 總時數 From 學習時數,課程資訊 " +
+                            "Where 課程資訊.課程編號 = 學習時數.課程代號  " +
+                            "and  學生代號 ='" + UserID + "'and 學年度 ='" + year + "' and 學期 ='" + Semester + "' Group By 課程代號,課程名稱";
                     //DB資料取得
                     PreparedStatement ps = con.prepareStatement(query);
                     ResultSet rs = ps.executeQuery();
+                    ClassHrsAllADA.clear();
                     while(rs.next()){
                         Map<String,String> ClassHrsAll = new HashMap<String, String>();
-//                        ClassHrsAll.put("課程名稱",rs.getString("課程名稱"));
+                        ClassHrsAll.put("課程名稱",rs.getString("課程名稱"));
+                        ClassHrsAll.put("課程代號",rs.getString("課程代號"));
                         ClassHrsAll.put("總時數",rs.getString("總時數"));
                         //ClassListInfo裝至ClassListADA二維陣列
                         ClassHrsAllADA.add(ClassHrsAll);
-                        z = "學習時數資料取得成功!";
                     }
+                    z = "學習時數資料取得成功!";
+                    isSuccess = true;
                 }
             }catch (Exception e){
+                isSuccess = false;
                 z = "資料取得失敗!";
             }
             return z;
         }
     }
 
+    public class DBGetClassHrsSelect extends AsyncTask<String,String,String>{
+        String z = ""; //建立回報訊息變數
+        Boolean isSuccess = false; //建立辨別成功變數
+        String year = spnClassHrsYear.getSelectedItem().toString();
+        String Semester = spnClassHrsSemester.getSelectedItem().toString();
+        int NewClassHrs;
+        int ClassHrsSum = 0;
+
+        @Override
+        protected void onPostExecute(String z){
+            z  = String.valueOf(ClassHrsSelectSum);
+            Toast.makeText(ShowClassHoursPage.this,z,Toast.LENGTH_SHORT).show();
+            txtShowClassHrsValue.setText(ClassNameArea + "總共：" + ClassHrsSelectSum + "分鐘");
+            ClassHrsSelectSum = ClassHrsSum;
+            int[] AttendListView = {R.id.txtShowAttendListDay,R.id.txtShowAttendListStatue}; //設定顯示清單元件
+            String[] from2 = {"學習日期","總時數"};
+            SimpleAdapter ShowClassHrsList = new SimpleAdapter(ShowClassHoursPage.this,ClassHrsSelectADA,R.layout.activity_showattendlist_itme,from2,AttendListView); //設定資料陣列
+            //設定陣列指向
+            listClassHrs.setAdapter(ShowClassHrsList);
+            ShowClassHrsList.notifyDataSetChanged();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try{
+                Connection con = connectionClass.CONN();
+                if(con == null){
+                    z = "伺服器連接失敗!";
+                }else {
+                    String query = "Select  學習日期,課程代號,課程名稱, 學習時數 As 總時數 From 學習時數,課程資訊 " +
+                            "Where 課程資訊.課程編號 = 學習時數.課程代號  " +
+                            "and  學生代號 ='" + UserID + "'and 學年度 ='" + year + "' and 學期 ='" + Semester + "' and 課程代號 ='"+ ClassIDArea +"'";
+                    //DB資料取得
+                    PreparedStatement ps = con.prepareStatement(query);
+                    ResultSet rs = ps.executeQuery();
+                    ClassHrsSelectADA.clear();
+
+                    while(rs.next()){
+                        Map<String,String> ClassHrsSelect = new HashMap<String, String>();
+                        ClassHrsSelect.put("學習日期",rs.getString("學習日期"));
+                        ClassHrsSelect.put("課程名稱",rs.getString("課程名稱"));
+                        ClassHrsSelect.put("課程代號",rs.getString("課程代號"));
+                        ClassHrsSelect.put("總時數",rs.getString("總時數"));
+                        NewClassHrs = Integer.parseInt(rs.getString("總時數"));
+                        ClassHrsSum = NewClassHrs + ClassHrsSum;
+                        //ClassListInfo裝至ClassListADA二維陣列
+                        ClassHrsSelectADA.add(ClassHrsSelect);
+                    }
+
+                    z = "學習時數資料取得成功!";
+                    isSuccess = true;
+                }
+            }catch (Exception e){
+                isSuccess = false;
+                z = "資料取得失敗!";
+            }
+            return z;
+        }
+    }
 
     public class DBGetUserClassList extends AsyncTask<String,String,String> {
         String z = ""; //建立回報訊息變數
@@ -284,6 +365,8 @@ public class ShowClassHoursPage extends AppCompatActivity {
             return z;
         }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
