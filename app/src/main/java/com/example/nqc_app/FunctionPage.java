@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.nqc_app.util.ActionBarTitle;
 
@@ -21,6 +22,8 @@ public class FunctionPage extends AppCompatActivity {
     //建立標題Bar類別
     private ActionBarTitle actionBarTitle;
     SharedPreferences preferences;
+    String UserID,UserStatue;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -29,6 +32,7 @@ public class FunctionPage extends AppCompatActivity {
         setContentView(R.layout.activity_function_page);
         initUI(); //建立UI元件
         preferences = getSharedPreferences("UserData",MODE_PRIVATE);
+        readUserData();
         ActionBar actionBar = getSupportActionBar(); //取得ActionBar
         actionBar.setDefaultDisplayHomeAsUpEnabled(true);
         ActionBarTitle.applyFont(actionBar,this,this.getTitle().toString()); //執行ActionBarTilte
@@ -57,18 +61,40 @@ public class FunctionPage extends AppCompatActivity {
                 //點擊我的資料
                 case R.id.btnToMyDataPage:{
                     //跳轉我的資料
-                    Intent intent = new Intent();
-                    intent.setClass(FunctionPage.this,MyDataPage.class);
-                    startActivity(intent);
+                    try{
+                        if(!UserStatue.equals("學生")){
+                            Intent intentClassHrs = new Intent();
+                            intentClassHrs.setClass(FunctionPage.this,ShowMyAttendPage.class);
+                            startActivity(intentClassHrs);
+                        }else {
+                            Intent intentClassHrs = new Intent();
+                            intentClassHrs.setClass(FunctionPage.this,ShowMyAttendPageT.class);
+                            startActivity(intentClassHrs);
+                        }
+                        break;
+                    }catch (Exception e){
+
+                    }
                     break;
                 }
 
                 //跳轉查詢學習時數
                 case R.id.btnToShowClassHrsPage:
-                    Intent intentClassHrs = new Intent();
-                    intentClassHrs.setClass(FunctionPage.this,ShowClassHoursPage.class);
-                    startActivity(intentClassHrs);
-                    break;
+                    Toast.makeText(getApplicationContext(),UserStatue,Toast.LENGTH_SHORT).show();
+                    try{
+                        if(UserStatue.equals("學生")){
+                            Intent intentClassHrs = new Intent();
+                            intentClassHrs.setClass(FunctionPage.this,ShowClassHoursPage.class);
+                            startActivity(intentClassHrs);
+                        }else {
+                            Intent intentClassHrs = new Intent();
+                            intentClassHrs.setClass(FunctionPage.this,ShowClassHoursPageT.class);
+                            startActivity(intentClassHrs);
+                        }
+                        break;
+                    }catch (Exception e){
+
+                    }
             }
         }
     };
@@ -86,6 +112,14 @@ public class FunctionPage extends AppCompatActivity {
         btnToShowClassHrsPage.setOnClickListener(btnListener);
         btnToAboutPage.setOnClickListener(btnListener);
         btnToMyDataPage.setOnClickListener(btnListener);
+    }
+
+    public void readUserData(){
+        //取得使用者ID
+        UserID = preferences.getString("userid","");
+        //取得使用者身分
+        UserStatue = preferences.getString("userstatue","");
+
     }
 
     @Override

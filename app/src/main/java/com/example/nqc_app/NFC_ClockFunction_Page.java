@@ -470,13 +470,22 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             try{
                 Connection con = connectionClass.CONN();
+                String query;
                 if(con == null){
                     z = "伺服器連接失敗!";
                 }else {
-                    //SQL查詢指令
-                    String query = "select 課程資訊.*,課程學生清單.*,教室資訊.* " +
-                            "from 課程資訊,課程學生清單,教室資訊" +
-                            " where 教室資訊.教室編號 = 課程資訊.上課地點 and 課程資訊.課程編號 = 課程學生清單.課程編號 and 課程學生清單.學生代號 ='" + UserID + "'";
+                  if(UserStatue.equals("學生")){
+                      //SQL查詢指令
+                       query = "select 課程資訊.*,課程學生清單.*,教室資訊.* " +
+                              "from 課程資訊,課程學生清單,教室資訊" +
+                              " where 教室資訊.教室編號 = 課程資訊.上課地點 and 課程資訊.課程編號 = 課程學生清單.課程編號 and 課程學生清單.學生代號 ='" + UserID + "'";
+
+                  }else {
+                      //SQL查詢指令
+                      query = "select 課程資訊.*,教室資訊.* " +
+                              "from 課程資訊,教室資訊" +
+                              " where 教室資訊.教室編號 = 課程資訊.上課地點 and 課程資訊.授課老師 ='" + UserID + "'";
+                  }
                     //DB資料取得
                     PreparedStatement ps = con.prepareStatement(query);
                     ResultSet rs = ps.executeQuery();

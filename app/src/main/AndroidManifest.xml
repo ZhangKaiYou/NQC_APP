@@ -31,11 +31,13 @@
         <activity android:label="聯絡我們" android:name=".ContactUsPage" android:parentActivityName=".AboutPage" android:windowSoftInputMode="stateHidden" />
         <activity android:label="修改我的資料" android:name=".EditMyDataPage" android:parentActivityName=".MyDataPage" android:windowSoftInputMode="stateHidden"/>
         <activity android:label="關於我們" android:name=".AboutPage" android:parentActivityName=".FunctionPage"/>
-        <activity android:label="出席狀況" android:name=".ShowMyAttendPage"  android:parentActivityName=".MyDataPage"/>
         <activity android:label="登入 Log in" android:name=".LoginPage"  android:parentActivityName=".MainPage" android:windowSoftInputMode="stateHidden"/>
         <activity android:label="註冊 Sign up" android:name=".SignUpPage"  android:parentActivityName=".MainPage" android:windowSoftInputMode="stateHidden"/>s
         <activity android:label="MainPage" android:name=".MainPage"  android:parentActivityName=".HomePage"/>
+        <activity android:label="出席狀況" android:name=".ShowMyAttendPage"  android:parentActivityName=".MyDataPage"/>
+        <activity android:label="出席狀況" android:name=".ShowMyAttendPageT"  android:parentActivityName=".MyDataPage"/>
         <activity android:label="學習時數" android:name=".ShowClassHoursPage"  android:parentActivityName=".FunctionPage"/>
+        <activity android:label="學習時數" android:name=".ShowClassHoursPageT"  android:parentActivityName=".FunctionPage"/>
     </application>
 
 </manifest>

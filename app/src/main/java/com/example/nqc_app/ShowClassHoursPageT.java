@@ -40,7 +40,7 @@ import java.util.Map;
 /**
  * Created by aa2646 on 2016/11/15.
  */
-public class ShowClassHoursPage extends AppCompatActivity {
+public class ShowClassHoursPageT extends AppCompatActivity {
     //使用者資料變數建立
     ConnectionClass connectionClass;
     SharedPreferences preferences;
@@ -110,9 +110,9 @@ public class ShowClassHoursPage extends AppCompatActivity {
             switch (view.getId()){
                 //點擊取得課程資料
                 case R.id.btnClassHrsGetClassList:
-                    LayoutInflater layoutInflater = LayoutInflater.from(ShowClassHoursPage.this); //建立介面類別
+                    LayoutInflater layoutInflater = LayoutInflater.from(ShowClassHoursPageT.this); //建立介面類別
                     View v = layoutInflater.inflate(R.layout.activity_classlist_item,null); //設定清單介面
-                    final AlertDialog dialogBuilder = new AlertDialog.Builder(ShowClassHoursPage.this).create();
+                    final AlertDialog dialogBuilder = new AlertDialog.Builder(ShowClassHoursPageT.this).create();
                     //設定清單元件
                     ListView lstClassList = (ListView)v.findViewById(R.id.lstClassList);
                     final TextView txtClassItemTitle = (TextView)v.findViewById(R.id.txtClassListTitle);
@@ -121,7 +121,7 @@ public class ShowClassHoursPage extends AppCompatActivity {
                     //設定資料來源
                     String[] from = {"課程名稱"};
                     int[] ClassListView = {R.id.txtClassListItemName}; //設定顯示清單
-                    final SimpleAdapter ClassList = new SimpleAdapter(ShowClassHoursPage.this,ClassListADA,R.layout.activity_classlistitem_item,from,ClassListView); //設定資料陣列
+                    final SimpleAdapter ClassList = new SimpleAdapter(ShowClassHoursPageT.this,ClassListADA,R.layout.activity_classlistitem_item,from,ClassListView); //設定資料陣列
                     final String[] ShowClass = new String[1];
                     //設定陣列指向
                     lstClassList.setAdapter(ClassList);
@@ -162,6 +162,7 @@ public class ShowClassHoursPage extends AppCompatActivity {
                     DBGetClassHrsAll dbGetClassHrsAll = new DBGetClassHrsAll();
                     dbGetClassHrsAll.execute("");
                     txtShowClassHrsValue.setText("目前清單顯示狀態：顯示全部(分鐘)");
+                    Toast.makeText(ShowClassHoursPageT.this,"老師版!",Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -212,10 +213,10 @@ public class ShowClassHoursPage extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String z){
-            Toast.makeText(ShowClassHoursPage.this,z,Toast.LENGTH_SHORT).show();
+            Toast.makeText(ShowClassHoursPageT.this,z,Toast.LENGTH_SHORT).show();
             int[] AttendListView = {R.id.txtShowAttendListDay,R.id.txtShowAttendListStatue}; //設定顯示清單元件
             String[] from2 = {"課程名稱","總時數"};
-            SimpleAdapter ShowClassHrsList = new SimpleAdapter(ShowClassHoursPage.this,ClassHrsAllADA,R.layout.activity_showattendlist_itme,from2,AttendListView); //設定資料陣列
+            SimpleAdapter ShowClassHrsList = new SimpleAdapter(ShowClassHoursPageT.this,ClassHrsAllADA,R.layout.activity_showattendlist_itme,from2,AttendListView); //設定資料陣列
             //設定陣列指向
             listClassHrs.setAdapter(ShowClassHrsList);
             ShowClassHrsList.notifyDataSetChanged();
@@ -266,7 +267,7 @@ public class ShowClassHoursPage extends AppCompatActivity {
             txtShowClassHrsValue.setText(ClassNameArea + "總共：" + ClassHrsSelectSum + "分鐘");
             int[] AttendListView = {R.id.txtShowAttendListDay,R.id.txtShowAttendListStatue}; //設定顯示清單元件
             String[] from2 = {"學習日期","總時數"};
-            SimpleAdapter ShowClassHrsList = new SimpleAdapter(ShowClassHoursPage.this,ClassHrsSelectADA,R.layout.activity_showattendlist_itme,from2,AttendListView); //設定資料陣列
+            SimpleAdapter ShowClassHrsList = new SimpleAdapter(ShowClassHoursPageT.this,ClassHrsSelectADA,R.layout.activity_showattendlist_itme,from2,AttendListView); //設定資料陣列
             //設定陣列指向
             listClassHrs.setAdapter(ShowClassHrsList);
             ShowClassHrsList.notifyDataSetChanged();
@@ -317,7 +318,7 @@ public class ShowClassHoursPage extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String z){
-            Toast.makeText(ShowClassHoursPage.this,z,Toast.LENGTH_SHORT).show();
+            Toast.makeText(ShowClassHoursPageT.this,z,Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -374,12 +375,12 @@ public class ShowClassHoursPage extends AppCompatActivity {
             //點擊AboutUsMenuItem
             case R.id.action_AboutUs:
                 Intent intent = new Intent();
-                intent.setClass(ShowClassHoursPage.this,AboutPage.class);
+                intent.setClass(ShowClassHoursPageT.this,AboutPage.class);
                 startActivity(intent);
                 break;
             //點擊LogOutMenuItem
             case R.id.action_LogOut:
-                new AlertDialog.Builder(ShowClassHoursPage.this)
+                new AlertDialog.Builder(ShowClassHoursPageT.this)
                         .setTitle("登出")
                         .setMessage("確認是否要登出!?")
                         .setPositiveButton("確定", new DialogInterface.OnClickListener()
@@ -387,7 +388,7 @@ public class ShowClassHoursPage extends AppCompatActivity {
                             public void onClick(DialogInterface dialoginterface, int i) {
                                 preferences.edit().clear().commit();
                                 Intent intentHome = new Intent();
-                                intentHome.setClass(ShowClassHoursPage.this,HomePage.class);
+                                intentHome.setClass(ShowClassHoursPageT.this,HomePage.class);
                                 startActivity(intentHome);
                             }
                         })
@@ -401,7 +402,7 @@ public class ShowClassHoursPage extends AppCompatActivity {
             //點擊ContactUsMenuItem
             case R.id.action_ContactUs:
                 Intent intentContactUs = new Intent();
-                intentContactUs.setClass(ShowClassHoursPage.this,ContactUsPage.class);
+                intentContactUs.setClass(ShowClassHoursPageT.this,ContactUsPage.class);
                 startActivity(intentContactUs);
                 break;
             case android.R.id.home:
