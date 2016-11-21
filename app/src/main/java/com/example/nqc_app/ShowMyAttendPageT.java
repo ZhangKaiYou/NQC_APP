@@ -45,8 +45,7 @@ public class ShowMyAttendPageT extends AppCompatActivity{
     Button btnAttendReLoad,btnAttendGetClassList;
     TextView txtShowAttendT;
     ListView listAttendT;
-    Spinner spnAttendYear,spnAttendSemester;
-    String UserID,ClassIDArea;
+    String UserID,ClassIDArea,ClassNameArea;
 
     //課程資料二維陣列建立
     List<Map<String,String>> ClassListADA = new ArrayList<Map<String,String>>();
@@ -150,6 +149,8 @@ public class ShowMyAttendPageT extends AppCompatActivity{
         btnAttendReLoad.setOnClickListener(btnListener);
         btnAttendGetClassList.setOnClickListener(btnListener);
 
+        btnAttendGetClassList.setVisibility(View.GONE);
+
         //建立ListView項目點選監聽
         listAttendT.setOnItemClickListener(listListener);
     }
@@ -160,7 +161,7 @@ public class ShowMyAttendPageT extends AppCompatActivity{
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             HashMap<String, String> obj = (HashMap<String, String>) ClassListADA.get(i);
             ClassIDArea = obj.get("課程編號");
-            Toast.makeText(ShowMyAttendPageT.this,ClassIDArea,Toast.LENGTH_SHORT).show();
+            ClassNameArea = obj.get("課程名稱");
             DBGetStudentAttend dbGetStudentAttend = new DBGetStudentAttend();
             dbGetStudentAttend.execute("'");
 
@@ -180,15 +181,7 @@ public class ShowMyAttendPageT extends AppCompatActivity{
             ClassList.notifyDataSetChanged();
             //設定陣列指向
             lstClassList.setAdapter(ClassList);
-            //清單點選監聽
-            lstClassList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    HashMap<String, String> obj = (HashMap<String, String>) ClassListADA.get(i);
-                    txtClassItemTitle.setText("你選擇了：" + obj.get("課程名稱"));
-                    ClassIDArea = obj.get("課程編號");
-                }
-            });
+            txtClassItemTitle.setText("你選擇的課程是：" + ClassNameArea);
             //清單按鈕點選監聽
             btnClassListOK.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -212,9 +205,8 @@ public class ShowMyAttendPageT extends AppCompatActivity{
         Boolean isSuccess = false;
         protected void onPostExecute(String z){
             if(isSuccess){
-                Toast.makeText(ShowMyAttendPageT.this,AllSudentAttendADA.toString(),Toast.LENGTH_SHORT).show();
             }else {
-                Toast.makeText(ShowMyAttendPageT.this,z.toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(ShowMyAttendPageT.this,z,Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -226,9 +218,9 @@ public class ShowMyAttendPageT extends AppCompatActivity{
                     z = "伺服器連接失敗!";
                 }else {
                     //SQL查詢指令
-                    String query = "select *" +
-                            "from 課程資訊,出席紀錄,使用者資訊" +
-                            " where 出席紀錄.學生代號 = 使用者資訊.帳號 and 出席紀錄.課程代號 = 課程資訊.課程編號 and 出席紀錄.課程代號 ='"  + ClassIDArea + "'" ;
+                    String query = "select 使用者名稱 from 課程資訊,出席紀錄,使用者資訊" +
+                            " where 出席紀錄.學生代號 = 使用者資訊.帳號 and 出席紀錄.課程代號 = 課程資訊.課程編號 " +
+                            "and 出席紀錄.課程代號 ='"  + ClassIDArea + "' and 出席紀錄.簽到簽退 = '簽到'  Group By 使用者資訊.使用者名稱" ;
 
                     //DB資料取得
                     PreparedStatement ps = con.prepareStatement(query);
@@ -280,7 +272,7 @@ public class ShowMyAttendPageT extends AppCompatActivity{
                     //SQL查詢指令
                     String query = "select 課程名稱,Count(課程編號) AS 到課人數,課程編號 " +
                             "from 課程資訊,出席紀錄" +
-                            " where 課程資訊.課程編號 = 出席紀錄.課程代號 and 出席紀錄.簽到簽退 ='簽到' Group By 課程名稱,課程編號";
+                            " where 課程資訊.課程編號 = 出席紀錄.課程代號 and 出席紀錄.簽到簽退 ='簽到' and 出席紀錄.簽到日期 ='1130'  Group By 課程名稱,課程編號";
                     //DB資料取得
                     PreparedStatement ps = con.prepareStatement(query);
                     ResultSet rs = ps.executeQuery();
