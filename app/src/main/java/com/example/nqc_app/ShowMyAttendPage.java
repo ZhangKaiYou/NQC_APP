@@ -227,6 +227,8 @@ public class ShowMyAttendPage extends AppCompatActivity{
                 //設定陣列指向
                 listAttend.setAdapter(ShowAttendList);
                 ShowAttendList.notifyDataSetChanged();
+            }else {
+                Toast.makeText(ShowMyAttendPage.this,z,Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -253,7 +255,6 @@ public class ShowMyAttendPage extends AppCompatActivity{
                         AllShowAttendADA.add(AttendList);
                     }
                     //資料取得成功回報
-                    z ="出席紀錄取得成功!";
                     isSuccess = true;
                 }
             }catch (Exception e){
@@ -282,6 +283,8 @@ public class ShowMyAttendPage extends AppCompatActivity{
                 //設定陣列指向
                 listAttend.setAdapter(ShowAttendList);
                 ShowAttendList.notifyDataSetChanged();
+            }else {
+                Toast.makeText(ShowMyAttendPage.this,z,Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -292,6 +295,7 @@ public class ShowMyAttendPage extends AppCompatActivity{
                 if(con == null){
                     z = "伺服器連接失敗!";
                 }else {
+
 
                     //SQL查詢指令
                     String query = "select 簽到日期,出席狀況 from 出席紀錄 where 出席狀況 = '缺曠' and  學生代號 ='" + UserID + "' and 課程代號 ='" + ClassIDArea + "'";
@@ -308,7 +312,6 @@ public class ShowMyAttendPage extends AppCompatActivity{
                         SelectShowAttendADA.add(AttendList);
                     }
                     //資料取得成功回報
-                    z ="課程資料取得成功!";
                     isSuccess = true;
                 }
             }catch (Exception e){
@@ -331,7 +334,9 @@ public class ShowMyAttendPage extends AppCompatActivity{
         String Semester = spnAttendSemester.getSelectedItem().toString();
         @Override
         protected void onPostExecute(String z){
-            Toast.makeText(ShowMyAttendPage.this,z,Toast.LENGTH_SHORT).show();
+            if(!isSuccess){
+                Toast.makeText(ShowMyAttendPage.this,z,Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override
@@ -363,7 +368,6 @@ public class ShowMyAttendPage extends AppCompatActivity{
                         ClassListADA.add(ClassListInfo);
                     }
                     //資料取得成功回報
-                    z ="課程資料取得成功!";
                     isSuccess = true;
                 }
             }catch (Exception e){

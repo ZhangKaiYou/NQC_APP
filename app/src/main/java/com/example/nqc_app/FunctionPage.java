@@ -62,7 +62,7 @@ public class FunctionPage extends AppCompatActivity {
                 case R.id.btnToMyDataPage:{
                     //跳轉我的資料
                     try{
-                        if(!UserStatue.equals("學生")){
+                        if(UserStatue.equals("學生")){
                             Intent intentClassHrs = new Intent();
                             intentClassHrs.setClass(FunctionPage.this,ShowMyAttendPage.class);
                             startActivity(intentClassHrs);
