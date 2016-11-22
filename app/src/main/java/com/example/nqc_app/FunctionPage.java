@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.nqc_app.util.ActionBarTitle;
 
@@ -54,7 +53,7 @@ public class FunctionPage extends AppCompatActivity {
                 case R.id.btnToAboutPage:{
                     //跳轉至關於頁面
                     Intent intent = new Intent();
-                    intent.setClass(FunctionPage.this,AboutPage.class);
+                    intent.setClass(FunctionPage.this,EditMyDataPage.class);
                     startActivity(intent);
                     break;
                 }
@@ -80,7 +79,6 @@ public class FunctionPage extends AppCompatActivity {
 
                 //跳轉查詢學習時數
                 case R.id.btnToShowClassHrsPage:
-                    Toast.makeText(getApplicationContext(),UserStatue,Toast.LENGTH_SHORT).show();
                     try{
                         if(UserStatue.equals("學生")){
                             Intent intentClassHrs = new Intent();

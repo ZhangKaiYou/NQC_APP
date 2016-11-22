@@ -146,7 +146,7 @@ public class EditMyDataPage extends AppCompatActivity {
             switch (view.getId()){
                 case R.id.btnEditMyDataCancel:
                     Intent intent = new Intent();
-                    intent.setClass(EditMyDataPage.this,MyDataPage.class);
+                    intent.setClass(EditMyDataPage.this,FunctionPage.class);
                     startActivity(intent);
                     break;
                 case R.id.btnEditMyDataPW:

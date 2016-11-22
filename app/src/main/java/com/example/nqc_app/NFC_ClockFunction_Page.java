@@ -479,7 +479,6 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
                        query = "select 課程資訊.*,課程學生清單.*,教室資訊.* " +
                               "from 課程資訊,課程學生清單,教室資訊" +
                               " where 教室資訊.教室編號 = 課程資訊.上課地點 and 課程資訊.課程編號 = 課程學生清單.課程編號 and 課程學生清單.學生代號 ='" + UserID + "'";
-
                   }else {
                       //SQL查詢指令
                       query = "select 課程資訊.*,教室資訊.* " +

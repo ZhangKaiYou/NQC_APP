@@ -18,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,15 +44,14 @@ public class ShowMyAttendPageT extends AppCompatActivity{
     Button btnAttendReLoad,btnAttendGetClassList;
     TextView txtShowAttendT;
     ListView listAttendT;
-    String UserID,ClassIDArea,ClassNameArea;
+    String UserID,ClassIDArea,ClassNameArea, StudentIDAttendArea;
 
-    //課程資料二維陣列建立
+    //使用者課程資料二維陣列建立
     List<Map<String,String>> ClassListADA = new ArrayList<Map<String,String>>();
-    //查詢所有缺曠紀錄
-    List<Map<String,String>> AllSudentAttendADA = new ArrayList<Map<String,String>>();
+    //查詢課程學生目前出席狀況
+    List<Map<String,String>> DBGetClassStudentAttendADA = new ArrayList<Map<String,String>>();
     //查詢個別缺曠紀錄
-    List<Map<String,String>> SelectShowAttendADA = new ArrayList<Map<String,String>>();
-
+    List<Map<String,String>> DBGetStudentClassAttendADA = new ArrayList<Map<String,String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,58 +81,57 @@ public class ShowMyAttendPageT extends AppCompatActivity{
                     dbGetUserClassList.execute(""); //執行課程資料取得功能
                     txtShowAttendT.setText("目前清單顯示狀態：今日課程");
                     break;
-                case R.id.btnAttendGetClassListT:  //取得課堂資訊按鈕
-
-                    LayoutInflater layoutInflater = LayoutInflater.from(ShowMyAttendPageT.this); //建立介面類別
-                    View v = layoutInflater.inflate(R.layout.activity_classlist_item,null); //設定清單介面
-                    final AlertDialog dialogBuilder = new AlertDialog.Builder(ShowMyAttendPageT.this).create();
-                    //設定清單元件
-                    ListView lstClassList = (ListView)v.findViewById(R.id.lstClassList);
-                    final TextView txtClassItemTitle = (TextView)v.findViewById(R.id.txtClassListTitle);
-                    Button btnClassListCancel = (Button)v.findViewById(R.id.btnClassListCancel);
-                    Button btnClassListOK = (Button)v.findViewById(R.id.btnClassListOK);
-                    //設定資料來源
-                    String[] from = {"課程名稱"};
-                    int[] ClassListView = {R.id.txtClassListItemName}; //設定顯示清單
-                    final SimpleAdapter ClassList = new SimpleAdapter(ShowMyAttendPageT.this,ClassListADA,R.layout.activity_classlistitem_item,from,ClassListView); //設定資料陣列
-                    final String[] ShowClass = new String[1];
-                    ClassList.notifyDataSetChanged();
-                    //設定陣列指向
-                    lstClassList.setAdapter(ClassList);
-                    //清單點選監聽
-                    lstClassList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            HashMap<String, String> obj = (HashMap<String, String>) ClassListADA.get(i);
-                            txtClassItemTitle.setText("你選擇了：" + obj.get("課程名稱"));
-                            ClassIDArea = obj.get("課程編號");
-                            ShowClass[0] = obj.get("課程名稱");
-                        }
-                    });
-                    //清單按鈕點選監聽
-                    btnClassListOK.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            SelectShowAttendADA.clear();
-                            txtShowAttendT.setText("你目前選擇的課程：" + ShowClass[0]);
-                            dialogBuilder.cancel();
-                        }
-                    });
-                    //清單點選監聽
-                    btnClassListCancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            dialogBuilder.cancel();
-                        }
-                    });
-                    dialogBuilder.setView(v);
-                    dialogBuilder.show();
-
-                    break;
+//                case R.id.btnAttendGetClassListT:  //取得課堂資訊按鈕
+//
+//                    LayoutInflater layoutInflater = LayoutInflater.from(ShowMyAttendPageT.this); //建立介面類別
+//                    View v = layoutInflater.inflate(R.layout.activity_classlist_item,null); //設定清單介面
+//                    final AlertDialog dialogBuilder = new AlertDialog.Builder(ShowMyAttendPageT.this).create();
+//                    //設定清單元件
+//                    ListView lstClassList = (ListView)v.findViewById(R.id.lstClassList);
+//                    final TextView txtClassItemTitle = (TextView)v.findViewById(R.id.txtClassListTitle);
+//                    Button btnClassListCancel = (Button)v.findViewById(R.id.btnClassListCancel);
+//                    Button btnClassListOK = (Button)v.findViewById(R.id.btnClassListOK);
+//                    //設定資料來源
+//                    String[] from = {"課程名稱"};
+//                    int[] ClassListView = {R.id.txtClassListItemName}; //設定顯示清單
+//                    final SimpleAdapter ClassList = new SimpleAdapter(ShowMyAttendPageT.this,ClassListADA,R.layout.activity_classlistitem_item,from,ClassListView); //設定資料陣列
+//                    final String[] ShowClass = new String[1];
+//                    ClassList.notifyDataSetChanged();
+//                    //設定陣列指向
+//                    lstClassList.setAdapter(ClassList);
+//                    //清單點選監聽
+//                    lstClassList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                        @Override
+//                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                            HashMap<String, String> obj = (HashMap<String, String>) ClassListADA.get(i);
+//                            txtClassItemTitle.setText("你選擇了：" + obj.get("課程名稱"));
+//                            ClassIDArea = obj.get("課程編號");
+//                            ShowClass[0] = obj.get("課程名稱");
+//                        }
+//                    });
+//                    //清單按鈕點選監聽
+//                    btnClassListOK.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            DBGetClassStudentAttendADA.clear();
+//                            txtShowAttendT.setText("你目前選擇的課程：" + ShowClass[0]);
+//                            dialogBuilder.cancel();
+//                        }
+//                    });
+//                    //清單點選監聽
+//                    btnClassListCancel.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            dialogBuilder.cancel();
+//                        }
+//                    });
+//                    dialogBuilder.setView(v);
+//                    dialogBuilder.show();
+//
+//                    break;
             }
         }
     };
-
 
     public void initUI(){
         //將Button指向變數
@@ -148,49 +145,26 @@ public class ShowMyAttendPageT extends AppCompatActivity{
         //建立Button點擊監聽
         btnAttendReLoad.setOnClickListener(btnListener);
         btnAttendGetClassList.setOnClickListener(btnListener);
-
         btnAttendGetClassList.setVisibility(View.GONE);
-
         //建立ListView項目點選監聽
         listAttendT.setOnItemClickListener(listListener);
+
     }
 
+    //ListView點擊監聽事件
     private ListView.OnItemClickListener listListener = new ListView.OnItemClickListener(){
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            HashMap<String, String> obj = (HashMap<String, String>) ClassListADA.get(i);
-            ClassIDArea = obj.get("課程編號");
-            ClassNameArea = obj.get("課程名稱");
-            DBGetStudentAttend dbGetStudentAttend = new DBGetStudentAttend();
-            dbGetStudentAttend.execute("'");
+            try{
+                HashMap<String, String> obj = (HashMap<String, String>) ClassListADA.get(i);
+                ClassIDArea = obj.get("課程編號");
+                ClassNameArea = obj.get("課程名稱");
+                DBGetClassAllStudentAttend dbGetClassAllStudentAttend = new DBGetClassAllStudentAttend();
+                dbGetClassAllStudentAttend.execute("'");
+            }catch (Exception e){
 
-            LayoutInflater layoutInflater = LayoutInflater.from(ShowMyAttendPageT.this); //建立介面類別
-            View v = layoutInflater.inflate(R.layout.activity_classlist_item,null); //設定清單介面
-            final AlertDialog dialogBuilder = new AlertDialog.Builder(ShowMyAttendPageT.this).create();
-            //設定清單元件
-            ListView lstClassList = (ListView)v.findViewById(R.id.lstClassList);
-            final TextView txtClassItemTitle = (TextView)v.findViewById(R.id.txtClassListTitle);
-            Button btnClassListCancel = (Button)v.findViewById(R.id.btnClassListCancel);
-            btnClassListCancel.setVisibility(View.GONE);
-            Button btnClassListOK = (Button)v.findViewById(R.id.btnClassListOK);
-            //設定資料來源
-            String[] from = {"使用者名稱"};
-            int[] ClassListView = {R.id.txtClassListItemName}; //設定顯示清單
-            final SimpleAdapter ClassList = new SimpleAdapter(ShowMyAttendPageT.this,AllSudentAttendADA,R.layout.activity_classlistitem_item,from,ClassListView); //設定資料陣列
-            ClassList.notifyDataSetChanged();
-            //設定陣列指向
-            lstClassList.setAdapter(ClassList);
-            txtClassItemTitle.setText("你選擇的課程是：" + ClassNameArea);
-            //清單按鈕點選監聽
-            btnClassListOK.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialogBuilder.cancel();
-                }
-            });
-            dialogBuilder.setView(v);
-            dialogBuilder.show();
+            }
         }
     };
 
@@ -199,12 +173,112 @@ public class ShowMyAttendPageT extends AppCompatActivity{
         UserID = preferences.getString("userid","");
     }
 
+    //查詢學生該課程出席狀況
+    public class DBGetStudentClassAttend extends AsyncTask<String,String,String> {
+        String z = "";
+        Boolean isSuccess = false;
 
-    public class DBGetStudentAttend extends AsyncTask<String,String,String>{
+        protected void onPostExecute(String z) {
+            if (isSuccess) {
+                int[] AttendListView = {R.id.txtShowAttendListDay, R.id.txtShowAttendListStatue}; //設定顯示清單元件
+                String[] from2 = {"簽到日期", "出席狀況"};
+                SimpleAdapter ShowStudendAttend = new SimpleAdapter(ShowMyAttendPageT.this, DBGetStudentClassAttendADA, R.layout.activity_showattendlist_itme, from2, AttendListView); //設定資料陣列
+                //設定陣列指向
+                listAttendT.setAdapter(ShowStudendAttend);
+                ShowStudendAttend.notifyDataSetChanged();
+                StudentIDAttendArea = null;
+            } else {
+                Toast.makeText(ShowMyAttendPageT.this, z, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                Connection con = connectionClass.CONN();
+                if (con == null) {
+                    z = "伺服器連接失敗!";
+                } else {
+                    //SQL查詢指令
+                    String query = "select 簽到日期,出席狀況 from 出席紀錄 where 出席紀錄.簽到簽退='簽到'  and 學生代號='" + StudentIDAttendArea + "' and 課程代號 ='" + ClassIDArea + "'";
+
+                    //DB資料取得
+                    PreparedStatement ps = con.prepareStatement(query);
+                    ResultSet rs = ps.executeQuery();
+                    DBGetStudentClassAttendADA.clear();
+                    //DB各項資料裝箱至ClassListInfo
+                    while (rs.next()) {
+                        Map<String, String> StudendClassAttend = new HashMap<String, String>();
+                        StudendClassAttend.put("簽到日期", rs.getString("簽到日期"));
+                        StudendClassAttend.put("出席狀況", rs.getString("出席狀況"));
+                        //ClassListInfo裝至ClassListADA二維陣列
+                        DBGetStudentClassAttendADA.add(StudendClassAttend);
+                    }
+                    //資料取得成功回報
+                    isSuccess = true;
+                }
+            } catch (Exception e) {
+                //資料取得失敗回報
+                isSuccess = false;
+                z = "資料取得失敗!";
+            }
+            return z;
+        }
+    }
+
+    //查詢課程學生當前出席狀況
+    public class DBGetClassAllStudentAttend extends AsyncTask<String,String,String>{
         String z = "";
         Boolean isSuccess = false;
         protected void onPostExecute(String z){
             if(isSuccess){
+                LayoutInflater layoutInflater = LayoutInflater.from(ShowMyAttendPageT.this); //建立介面類別
+                View v = layoutInflater.inflate(R.layout.activity_classlist_item,null); //設定清單介面
+                final AlertDialog dialogBuilder = new AlertDialog.Builder(ShowMyAttendPageT.this).create();
+                //設定清單元件
+                ListView lstClassList = (ListView)v.findViewById(R.id.lstClassList);
+                final TextView txtClassItemTitle = (TextView)v.findViewById(R.id.txtClassListTitle);
+                Button btnClassListCancel = (Button)v.findViewById(R.id.btnClassListCancel);
+                Button btnClassListOK = (Button)v.findViewById(R.id.btnClassListOK);
+                //設定資料來源
+                String[] from = {"使用者名稱"};
+                int[] ClassListView = {R.id.txtClassListItemName}; //設定顯示清單
+                final String[] StudentName = new String[1];
+                final SimpleAdapter ClassList = new SimpleAdapter(ShowMyAttendPageT.this,DBGetClassStudentAttendADA,R.layout.activity_classlistitem_item,from,ClassListView); //設定資料陣列
+                ClassList.notifyDataSetChanged();
+                //設定陣列指向
+                lstClassList.setAdapter(ClassList);
+                txtClassItemTitle.setText("你選擇的課程是：" + ClassNameArea);
+
+                lstClassList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        HashMap<String, String> obj = (HashMap<String, String>) DBGetClassStudentAttendADA.get(i);
+                        txtClassItemTitle.setText("你選擇了：" + obj.get("使用者名稱"));
+                        StudentIDAttendArea = obj.get("帳號");
+                        StudentName[0] = obj.get("使用者名稱");
+
+                    }
+                });
+                //清單按鈕點選監聽
+                btnClassListOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DBGetStudentClassAttend dbGetStudentClassAttend = new DBGetStudentClassAttend();
+                        dbGetStudentClassAttend.execute("");
+                        txtShowAttendT.setText("目前顯示為：" + StudentName[0] + "的出席狀況");
+                        dialogBuilder.cancel();
+                    }
+                });
+                btnClassListCancel.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View view) {
+                        dialogBuilder.cancel();
+                    }
+                });
+                dialogBuilder.setView(v);
+                dialogBuilder.show();
             }else {
                 Toast.makeText(ShowMyAttendPageT.this,z,Toast.LENGTH_SHORT).show();
             }
@@ -218,20 +292,21 @@ public class ShowMyAttendPageT extends AppCompatActivity{
                     z = "伺服器連接失敗!";
                 }else {
                     //SQL查詢指令
-                    String query = "select 使用者名稱 from 課程資訊,出席紀錄,使用者資訊" +
+                    String query = "select 使用者名稱,帳號 from 課程資訊,出席紀錄,使用者資訊" +
                             " where 出席紀錄.學生代號 = 使用者資訊.帳號 and 出席紀錄.課程代號 = 課程資訊.課程編號 " +
-                            "and 出席紀錄.課程代號 ='"  + ClassIDArea + "' and 出席紀錄.簽到簽退 = '簽到'  Group By 使用者資訊.使用者名稱" ;
+                            "and 出席紀錄.課程代號 ='"  + ClassIDArea + "' and 出席紀錄.簽到簽退 = '簽到'  Group By 使用者資訊.使用者名稱,使用者資訊.帳號" ;
 
                     //DB資料取得
                     PreparedStatement ps = con.prepareStatement(query);
                     ResultSet rs = ps.executeQuery();
-                    AllSudentAttendADA.clear();
+                    DBGetClassStudentAttendADA.clear();
                     //DB各項資料裝箱至ClassListInfo
                     while (rs.next()) {
-                        Map<String,String> StudendAttend = new HashMap<String, String>();
-                        StudendAttend.put("使用者名稱",rs.getString("使用者名稱"));
+                        Map<String,String> StudendAttent = new HashMap<String, String>();
+                        StudendAttent.put("使用者名稱",rs.getString("使用者名稱"));
+                        StudendAttent.put("帳號",rs.getString("帳號"));
                         //ClassListInfo裝至ClassListADA二維陣列
-                        AllSudentAttendADA.add(StudendAttend);
+                        DBGetClassStudentAttendADA.add(StudendAttent);
                     }
                     //資料取得成功回報
                     isSuccess = true;
@@ -245,6 +320,7 @@ public class ShowMyAttendPageT extends AppCompatActivity{
         }
     }
 
+    //取得使用者課程
     public class DBGetUserClassList extends AsyncTask<String,String,String> {
         String z = ""; //建立回報訊息變數
         Boolean isSuccess = false; //建立辨別成功變數
