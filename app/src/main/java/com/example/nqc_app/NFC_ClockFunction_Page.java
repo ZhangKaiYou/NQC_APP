@@ -40,6 +40,7 @@ import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,12 +71,15 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
         private PendingIntent mNfcPendingIntent = null;
 
         //全域資料變數建立
-        String UserID,UserName,UserStatue;
+        String UserID,UserName,UserStatue,AttendClockTime;
         String ClassRoomArea , ClassIDArea = null ,ClassNameArea = null,ClassRoomIDArea = null,AttendStatudArea = null;
         int ClassTimeHHArea, ClassTimeMMArea,ClassLongArea,ClassWeekArea;
 
         //課程資料二維陣列建立
         List<Map<String,String>> ClassListADA = new ArrayList<Map<String,String>>();
+        //簽到時間二維陣列建立
+        List<Map<String,String>> AttendTimeADA = new ArrayList<Map<String,String>>();
+
         //判斷能否開啟NFCP2P功能
         Boolean initNFCP2P = false;
 
@@ -95,6 +99,7 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
             ActionBarTitle.applyFont(actionBar,this,this.getTitle().toString()); //執行ActionBarTilte
             DBGetUserClassList dbGetUserClassList = new DBGetUserClassList(); //取得課程資料功能類別建立
             dbGetUserClassList.execute(""); //執行課程資料取得功能
+
             initNFC(); //執行建立NFC資落傳遞類別
             checkNFCFunction(); //檢查NFC功能是否正常
     }
@@ -158,6 +163,8 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
                             txtNFCClassName.setText(ClassName[0]);
                             txtNFCClassRoom.setText(ClassRoom[0]);
                             txtNFCClassTime.setText("上課時間：" + ClassTimeH[0] + ":" + ClassTimeM[0]);
+                            DBGetUserAttendTime dbGetUserAttendTime = new DBGetUserAttendTime();
+                            dbGetUserAttendTime.execute("");
                             dialogBuilder.cancel();
                         }
                     });
@@ -215,7 +222,7 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
             mNfcAdapter.setNdefPushMessage(message,NFC_ClockFunction_Page.this);
             Toast.makeText(NFC_ClockFunction_Page.this,"已傳遞資料!",Toast.LENGTH_SHORT).show();
         }else {
-            NdefMessage message = BobNdefMessage.getNdefMsg_from_RTD_TEXT("身分錯誤!",false,false);
+            NdefMessage message = BobNdefMessage.getNdefMsg_from_RTD_TEXT("請開啟臨時標籤開關!",false,false);
             mNfcAdapter.setNdefPushMessage(message,NFC_ClockFunction_Page.this);
             Toast.makeText(NFC_ClockFunction_Page.this,"請開啟臨時標籤功能!",Toast.LENGTH_SHORT).show();
         }
@@ -359,7 +366,7 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
         String CheckStatue = null;
         String ClockReCodeDay = new SimpleDateFormat("MMdd", Locale.ENGLISH).format(Calendar.getInstance().getTime());
         String ClockToday = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(Calendar.getInstance().getTime());
-        String ClockTime = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH).format(Calendar.getInstance().getTime());
+        String ClockTime = new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Calendar.getInstance().getTime());
         int YearNow = Integer.parseInt(new SimpleDateFormat("yyyy", Locale.ENGLISH).format(Calendar.getInstance().getTime())) - 1911;
         int MMNow = Integer.parseInt(new SimpleDateFormat("MM", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
         if(MMNow >= 2 && MMNow <=6 ){
@@ -367,7 +374,7 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
         }else {
             semester = 1;
         }
-        String ClockReCode = StudentID + ClockReCodeDay ;
+        String ClockReCode = StudentID + ClockReCodeDay + ClassID ;
         if(Check.getCheckedRadioButtonId() == (R.id.rdbtnNFCCheckIn)){
             CheckStatue = "簽到";
             ClockReCode = ClockReCode + "A";
@@ -385,10 +392,13 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
                     z = "伺服器連接失敗!";
                 }else {
                     String query = "insert into 出席紀錄 (簽到紀錄,學年度,學期,簽到星期,簽到日期,簽到時間,學生代號,課程代號,教室代號,出席狀況,簽到簽退) values ('"
-                            + ClockReCode +"','" +  YearNow + "','" + semester  + "','"  + ClockTimeWeek + "','" + ClockToday + "','" + ClockTime + "','" + StudentID  + "','" + ClassID+ "','" + ClassRoomID + "','" + AttendStatue + "','" + CheckStatue + "')" ;
+                            + ClockReCode +"','" +  YearNow + "','" + semester  + "','"  + ClockTimeWeek + "','" + ClockReCodeDay + "','" + ClockTime + "','" + StudentID  + "','" + ClassID+ "','" + ClassRoomID + "','" + AttendStatue + "','" + CheckStatue + "')" ;
                     PreparedStatement preparedStatement = con.prepareStatement(query);
                     preparedStatement.executeUpdate();
                     z = CheckStatue + "成功!";
+                    if(Check.getCheckedRadioButtonId() == (R.id.rdbtnNFCCheckOut)){
+                      UpdateClassHrs();
+                    }
                 }
             }catch (Exception ex){
                 z = "請勿在同意時間簽到兩次以上!";
@@ -396,6 +406,66 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
             Toast.makeText(NFC_ClockFunction_Page.this,z,Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(NFC_ClockFunction_Page.this,"請選擇簽到或簽退!",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //上傳學習時數
+    public void UpdateClassHrs(){
+        String z = "";
+        Boolean isTrue = false;
+        String ClockReCode = UserID + AttendClockTime + ClassIDArea;
+        int NowTimeHH = Integer.parseInt(new SimpleDateFormat("HH", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
+        int NowTimeMM = Integer.parseInt(new SimpleDateFormat("mm", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
+
+        String AttendTimeHH,AttendTimeMM;
+        String AttendTime[] = AttendClockTime.split(":");
+        AttendTimeHH = AttendTime[0];
+        AttendTimeMM = AttendTime[1];
+        int TimeHH = Integer.parseInt(AttendTimeHH);
+        int TimeMM = Integer.parseInt(AttendTimeMM);
+        int ClassTimeValue = 0;
+        if(AttendClockTime != null){
+            if(NowTimeHH >= TimeHH){
+                if(NowTimeHH == TimeHH ){
+                    if (NowTimeMM >= TimeMM){
+                        ClassTimeValue = NowTimeMM - TimeMM;
+                        isTrue = true;
+                    }else{
+                        z = "簽退時間不滿一分鐘!";
+                        isTrue = false;
+                    }
+                }else if(NowTimeHH > TimeHH){
+                    if(NowTimeMM >= TimeMM){
+                        ClassTimeValue = ((NowTimeHH - TimeHH) * 60) + (NowTimeMM - TimeMM);
+                        isTrue = true;
+                    }else {
+                        ClassTimeValue = (60 -(TimeMM - NowTimeMM));
+                        isTrue = true;
+                    }
+                }
+            }else {
+                z = "簽退時間比簽到時間早!";
+                isTrue = false;
+            }
+        }else {
+            z = "無簽到時間!";
+            isTrue = false;
+        }
+
+        try {
+            if(isTrue){
+                Connection con = new ConnectionClass().CONN();
+                if(con == null){
+                    z = "伺服器連接失敗!";
+                }else {
+                    String query = "insert into 學習時數 (學習時數紀錄,學習日期,課程代號,學生代號,時數) values ('"
+                            + ClockReCode + "','" + AttendClockTime + "','" + ClassIDArea + "','" + UserID + "','" + ClassTimeValue + "')";
+                    PreparedStatement preparedStatement = con.prepareStatement(query);
+                    preparedStatement.executeUpdate();
+                }
+            }
+        }catch (Exception ex){
+            z = "學習時數寫入失敗!";
         }
     }
 
@@ -457,6 +527,7 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
         txtNFCStudentName.setText("姓名：" + UserName);
     }
 
+    //取得使用者課程
     public class DBGetUserClassList extends AsyncTask<String,String,String>{
         String z = ""; //建立回報訊息變數
         Boolean isSuccess = false; //建立辨別成功變數
@@ -517,7 +588,52 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
         }
     }
 
-    //簡查NFC功能類別
+    //取得使用者課程
+    public class DBGetUserAttendTime extends AsyncTask<String,String,String>{
+        String z = ""; //建立回報訊息變數
+        Boolean isSuccess = false; //建立辨別成功變數
+        String ClockReCodeDay = new SimpleDateFormat("MMdd", Locale.ENGLISH).format(Calendar.getInstance().getTime());
+        String Clock = "1011";
+        String Class = "R1027";
+
+        @Override
+        protected void onPostExecute(String z){
+            Toast.makeText(NFC_ClockFunction_Page.this,AttendClockTime,Toast.LENGTH_SHORT).show();
+            Toast.makeText(NFC_ClockFunction_Page.this,z,Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try{
+                Connection con = connectionClass.CONN();
+                String query;
+                if(con == null){
+                    z = "伺服器連接失敗!";
+                }else {
+                    query = "select * from 出席紀錄 " +
+                            "where 學生代號 ='" + UserID + "' and 課程代號 ='" + Class + "' and 簽到日期 ='" + Clock + "'";
+                    //DB資料取得
+                    Statement stmt = con.createStatement();
+                    ResultSet rs = stmt.executeQuery(query);
+                    //DB各項資料裝箱至ClassListInfo
+                    if(rs.next()){
+                        AttendClockTime = rs.getString("簽到時間");
+                    }
+                    //資料取得成功回報
+                    z = "課程資料取得成功!";
+                    isSuccess = true;
+                }
+            }catch (Exception e){
+                //資料取得失敗回報
+                isSuccess = false;
+                z = "資料取得失敗!";
+            }
+            //回覆資料取得狀態訊息回onPostExecute
+            return z;
+        }
+    }
+
+    //檢查NFC功能類別
     public boolean checkNFCFunction(){
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if(mNfcAdapter ==null){

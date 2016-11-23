@@ -17,10 +17,10 @@ public class MyDataPage extends AppCompatActivity {
         setContentView(R.layout.activity_mydata_page);
 
         Button btnToShowAttendPage = (Button)findViewById(R.id.btnToShowAttendPage);
-        Button btnToEditMyDataPage = (Button)findViewById(R.id.btnToEditMyDataPage);
+//        Button btnToEditMyDataPage = (Button)findViewById(R.id.btnToEditMyDataPage);
 
         btnToShowAttendPage.setOnClickListener(btnListener);
-        btnToEditMyDataPage.setOnClickListener(btnListener);
+//        btnToEditMyDataPage.setOnClickListener(btnListener);
     }
 
     private Button.OnClickListener btnListener = new Button.OnClickListener(){
@@ -32,12 +32,12 @@ public class MyDataPage extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 }
-                case R.id.btnToEditMyDataPage:{
-                    Intent intent = new Intent();
-                    intent.setClass(MyDataPage.this,EditMyDataPage.class);
-                    startActivity(intent);
-                    break;
-                }
+//                case R.id.btnToEditMyDataPage:{
+//                    Intent intent = new Intent();
+//                    intent.setClass(MyDataPage.this,EditMyDataPage.class);
+//                    startActivity(intent);
+//                    break;
+//                }
             }
 
         }
