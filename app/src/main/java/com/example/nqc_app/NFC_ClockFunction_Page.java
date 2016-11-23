@@ -40,6 +40,7 @@ import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
         private PendingIntent mNfcPendingIntent = null;
 
         //全域資料變數建立
-        String UserID,UserName,UserStatue;
+        String UserID,UserName,UserStatue, ClassAttendTimeArea;
         String ClassRoomArea , ClassIDArea = null ,ClassNameArea = null,ClassRoomIDArea = null,AttendStatudArea = null;
         int ClassTimeHHArea, ClassTimeMMArea,ClassLongArea,ClassWeekArea;
 
@@ -97,6 +98,7 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
             dbGetUserClassList.execute(""); //執行課程資料取得功能
             initNFC(); //執行建立NFC資落傳遞類別
             checkNFCFunction(); //檢查NFC功能是否正常
+
     }
 
     //按鈕監聽
@@ -158,6 +160,8 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
                             txtNFCClassName.setText(ClassName[0]);
                             txtNFCClassRoom.setText(ClassRoom[0]);
                             txtNFCClassTime.setText("上課時間：" + ClassTimeH[0] + ":" + ClassTimeM[0]);
+                            DBGetClassAttendTime dbGetClassAttendTime = new DBGetClassAttendTime();
+                            dbGetClassAttendTime.execute("");
                             dialogBuilder.cancel();
                         }
                     });
@@ -215,7 +219,7 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
             mNfcAdapter.setNdefPushMessage(message,NFC_ClockFunction_Page.this);
             Toast.makeText(NFC_ClockFunction_Page.this,"已傳遞資料!",Toast.LENGTH_SHORT).show();
         }else {
-            NdefMessage message = BobNdefMessage.getNdefMsg_from_RTD_TEXT("身分錯誤!",false,false);
+            NdefMessage message = BobNdefMessage.getNdefMsg_from_RTD_TEXT("請開啟臨時標籤功能！!",false,false);
             mNfcAdapter.setNdefPushMessage(message,NFC_ClockFunction_Page.this);
             Toast.makeText(NFC_ClockFunction_Page.this,"請開啟臨時標籤功能!",Toast.LENGTH_SHORT).show();
         }
@@ -367,7 +371,7 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
         }else {
             semester = 1;
         }
-        String ClockReCode = StudentID + ClockReCodeDay ;
+        String ClockReCode = StudentID + ClockReCodeDay + ClassIDArea ;
         if(Check.getCheckedRadioButtonId() == (R.id.rdbtnNFCCheckIn)){
             CheckStatue = "簽到";
             ClockReCode = ClockReCode + "A";
@@ -388,6 +392,7 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
                             + ClockReCode +"','" +  YearNow + "','" + semester  + "','"  + ClockTimeWeek + "','" + ClockToday + "','" + ClockTime + "','" + StudentID  + "','" + ClassID+ "','" + ClassRoomID + "','" + AttendStatue + "','" + CheckStatue + "')" ;
                     PreparedStatement preparedStatement = con.prepareStatement(query);
                     preparedStatement.executeUpdate();
+                    UpdataLearnHrs();
                     z = CheckStatue + "成功!";
                 }
             }catch (Exception ex){
@@ -397,6 +402,68 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
         }else {
             Toast.makeText(NFC_ClockFunction_Page.this,"請選擇簽到或簽退!",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void UpdataLearnHrs(){
+        String z = "";
+        Boolean Attend = false;
+        String ClockReCodeDay = new SimpleDateFormat("MMdd", Locale.ENGLISH).format(Calendar.getInstance().getTime());
+        String LearnRecode = UserID +  ClockReCodeDay + ClassIDArea;
+        if(ClassAttendTimeArea == null){
+            ClassAttendTimeArea = "99:99";
+        }
+        String AttendTime[] = ClassAttendTimeArea.split(":");
+        int AttendTimeHH = Integer.parseInt(AttendTime[0]);
+        int AttendTimeMM = Integer.parseInt(AttendTime[1]);
+        int NowAttendTimeHH = Integer.parseInt(new SimpleDateFormat("HH", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
+        int NowAttendTimeMM = Integer.parseInt(new SimpleDateFormat("mm", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
+        int LearnHrsValue = 0;
+        NowAttendTimeHH = 12;
+        NowAttendTimeMM = 11;
+        if(ClassAttendTimeArea != null){
+            if(NowAttendTimeHH >= AttendTimeHH){
+                if(NowAttendTimeHH == AttendTimeHH){
+                    if(NowAttendTimeMM >= AttendTimeMM) {
+                        LearnHrsValue = NowAttendTimeMM - AttendTimeMM;
+                        Attend = true;
+                    }else {
+                        z = "簽退時間小於簽到時間(分鐘)!";
+                    }
+                }else {
+                    if(NowAttendTimeMM >= AttendTimeMM){
+                        LearnHrsValue =((NowAttendTimeHH - AttendTimeHH) * 60) + (NowAttendTimeMM - AttendTimeMM);
+                        Attend = true;
+                    }else {
+                        LearnHrsValue =((NowAttendTimeHH - AttendTimeHH) * 60) - (AttendTimeMM - NowAttendTimeMM);
+                        Attend = true;
+                    }
+                }
+            }else {
+                Attend =false;
+                z = "簽退時間小於簽到時間!(小時);";
+            }
+        }else {
+            Attend = false;
+        }
+        String j = "";
+        if(Attend){
+            try {
+                Connection con = new ConnectionClass().CONN();
+                if(con == null){
+                    j = "伺服器連接失敗!";
+                }else {
+                    String query = "insert into 學習時數 (學習時數紀錄,學習日期,課程代號,學生代號,時數) values ('"
+                            + LearnRecode + "','" + ClockReCodeDay + "','" + ClassIDArea + "','" + UserID + "','" + LearnHrsValue + "')";
+                    PreparedStatement preparedStatement = con.prepareStatement(query);
+                    preparedStatement.executeUpdate();
+                    j = "學習時數寫入成功";
+                }
+            }catch (Exception ex){
+                j = "學習時數寫入失敗!";
+            }
+        }
+        Toast.makeText(NFC_ClockFunction_Page.this,z,Toast.LENGTH_SHORT).show();
+        Toast.makeText(NFC_ClockFunction_Page.this,j,Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -457,6 +524,49 @@ public class NFC_ClockFunction_Page extends AppCompatActivity {
         txtNFCStudentName.setText("姓名：" + UserName);
     }
 
+    public class DBGetClassAttendTime extends AsyncTask<String,String,String>{
+        String z = "";
+        Boolean isSuccess = false;
+        String ClockReCodeDay = new SimpleDateFormat("MMdd", Locale.ENGLISH).format(Calendar.getInstance().getTime());
+        String TodayAttendRecode = UserID + ClockReCodeDay + ClassIDArea + "A";
+        String AttendTime;
+        @Override
+        protected void onPostExecute(String z){
+            if(AttendTime != null){
+                ClassAttendTimeArea = AttendTime;
+            }
+            Toast.makeText(NFC_ClockFunction_Page.this,z,Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+             Connection con = connectionClass.CONN();
+                if(con == null){
+                    z = "伺服器連接失敗!";
+                }else {
+                    String query = "select * from 出席紀錄 where 簽到紀錄 ='" + TodayAttendRecode + "'";
+                    Statement stmt = con.createStatement();
+                    ResultSet rs = stmt.executeQuery(query);
+                    if(rs.next()){
+                        AttendTime = rs.getString("簽到時間");
+                        z = "取得該課程簽到時間!";
+                        isSuccess = true;
+                    }else {
+                        z = "查無資料!";
+                        isSuccess = false;
+                    }
+                    z = "取得該課程簽到時間!";
+                }
+            }catch (Exception e){
+                z = "查詢失敗";
+                isSuccess = false;
+            }
+            return z;
+        }
+    }
+
+    //取得個人課程清單
     public class DBGetUserClassList extends AsyncTask<String,String,String>{
         String z = ""; //建立回報訊息變數
         Boolean isSuccess = false; //建立辨別成功變數
