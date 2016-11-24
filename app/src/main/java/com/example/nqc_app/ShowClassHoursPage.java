@@ -231,7 +231,7 @@ public class ShowClassHoursPage extends AppCompatActivity {
                 if(con == null){
                     z = "伺服器連接失敗!";
                 }else {
-                    String query = "Select  課程代號,課程名稱, Sum(時數) As 總時數 From 學習時數,課程資訊 " +
+                    String query = "Select  課程代號,課程名稱, Sum(學習時數) As 總時數 From 學習時數,課程資訊 " +
                             "Where 課程資訊.課程編號 = 學習時數.課程代號  " +
                             "and  學習時數.學生代號 ='" + UserID + "'and 課程資訊.學年度 ='" + year + "' and 課程資訊.學期 ='" + Semester + "' Group By 課程代號,課程名稱";
                     //DB資料取得
@@ -287,7 +287,7 @@ public class ShowClassHoursPage extends AppCompatActivity {
                 if(con == null){
                     z = "伺服器連接失敗!";
                 }else {
-                    String query = "Select  學習日期,課程代號,課程名稱, 時數 As 總時數 From 學習時數,課程資訊 " +
+                    String query = "Select  學習日期,課程代號,課程名稱, 學習時數 As 總時數 From 學習時數,課程資訊 " +
                             "Where 課程資訊.課程編號 = 學習時數.課程代號  " +
                             "and  學生代號 ='" + UserID + "'and 學年度 ='" + year + "' and 學期 ='" + Semester + "' and 課程代號 ='"+ ClassIDArea +"'";
                     //DB資料取得

@@ -219,7 +219,6 @@ public class ShowMyAttendPage extends AppCompatActivity{
 
         @Override
         protected void onPostExecute(String z){
-            Toast.makeText(ShowMyAttendPage.this,z,Toast.LENGTH_SHORT).show();
             if(isSuccess){
                 int[] AttendListView = {R.id.txtShowAttendListDay,R.id.txtShowAttendListStatue}; //設定顯示清單元件
                 String[] from2 = {"簽到日期","出席狀況"};
