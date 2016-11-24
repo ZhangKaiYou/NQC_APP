@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.NFC" />
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/icon"
+        android:icon="@mipmap/iconh"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -27,7 +27,6 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
-        <activity android:label="我的資料" android:name=".MyDataPage"  android:parentActivityName=".FunctionPage" />
         <activity android:label="聯絡我們" android:name=".ContactUsPage" android:parentActivityName=".AboutPage" android:windowSoftInputMode="stateHidden" />
         <activity android:label="修改我的資料" android:name=".EditMyDataPage" android:parentActivityName=".MyDataPage" android:windowSoftInputMode="stateHidden"/>
         <activity android:label="關於我們" android:name=".AboutPage" android:parentActivityName=".FunctionPage"/>
