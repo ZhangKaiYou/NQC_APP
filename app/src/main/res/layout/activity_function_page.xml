@@ -11,7 +11,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/mydata" />
+        android:background="@drawable/attendrecord" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,28 +21,27 @@
 
             <Button
                 android:id="@+id/btnToNFCPage"
-                android:layout_width="130dp"
+                android:layout_width="98dp"
                 android:layout_height="130dp"
                 android:layout_marginRight="30dp"
                 android:layout_margin="10dp"
-                android:layout_weight="0.3"
-                android:background="@drawable/enterrollcall" />
+                android:layout_weight="0.5"
+                android:background="@drawable/rollcallpage" />
 
             <Button
                 android:id="@+id/btnToShowClassHrsPage"
                 android:layout_width="98dp"
                 android:layout_height="130dp"
                 android:layout_margin="10dp"
-                android:layout_weight="0.3"
-                android:background="@drawable/logout"/>
+                android:layout_weight="0.5"
+                android:background="@drawable/learnhours"/>
 
     </LinearLayout>
             <Button
                 android:id="@+id/btnToAboutPage"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_marginTop="20dp"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/aboutus" />
+                android:background="@drawable/modify" />
 
 </LinearLayout>
