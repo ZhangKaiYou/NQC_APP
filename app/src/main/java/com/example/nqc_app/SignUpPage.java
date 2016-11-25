@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nqc_app.util.ConnectionClass;
@@ -38,6 +39,7 @@ public class SignUpPage extends AppCompatActivity {
     String [] Department = new String[] {"資訊管理系","會計資訊系","財務金融系","企業管理系"};
     //UI字串設定
     private EditText edtSignUpName, edtSignUpClass, edtSignUpStudentID, edtSignUpPW, edtSignUpCKPW,edtSignUpStudentEmail;
+    private TextView txtSignUpTest;
     private Button btnSignUpOK, btnSignUpClear;
     private RadioGroup Gender = null;
     private String GenderText = null;
@@ -81,16 +83,19 @@ public class SignUpPage extends AppCompatActivity {
         //設定Button指向變數
         btnSignUpOK = (Button)findViewById(R.id.btnSignUpOK);
         btnSignUpClear = (Button)findViewById(R.id.btnSingUpClear);
+        //測試用
+        txtSignUpTest = (TextView)findViewById(R.id.txtSignUpStudentID);
         //建立Button監聽類別
         btnSignUpOK.setOnClickListener(btnListener);
         btnSignUpClear.setOnClickListener(btnListener);
+        txtSignUpTest.setOnClickListener(btnListener);
     }
 
     private Button.OnClickListener btnListener = new Button.OnClickListener(){
         public void onClick(View v){
             switch (v.getId()){
                 //按下確定註冊
-                case R.id.btnSignUpOK:{
+                case R.id.btnSignUpOK:
                     //判別性別單選內容
                     if (Gender.getCheckedRadioButtonId() == (R.id.rdbtnSignUpMan)){
                         GenderText = "男";
@@ -138,9 +143,9 @@ public class SignUpPage extends AppCompatActivity {
                             })
                             .show();
                     break;
-                }
+
                 //按下清除按鈕
-                case R.id.btnSingUpClear:{
+                case R.id.btnSingUpClear:
                     //清除輸入框內容
                     edtSignUpStudentID.setText("");
                     edtSignUpPW.setText("");
@@ -154,7 +159,16 @@ public class SignUpPage extends AppCompatActivity {
                     spnSignUpStatue.setSelection(0);
                     spnSignUpDepartment.setSelection(0);
                     break;
-                }
+
+                case R.id.txtSignUpStudentID:
+                    edtSignUpStudentID.setText("N1026499");
+                    edtSignUpPW.setText("12345678");
+                    edtSignUpCKPW.setText("12345678");
+                    edtSignUpName.setText("Demo員");
+                    edtSignUpClass.setText("資四甲");
+                    edtSignUpStudentEmail.setText("Demo@gmail.com");
+                    Gender.check(0);
+                    break;
             }
         }
     };
