@@ -240,7 +240,7 @@ public class ShowMyAttendPage extends AppCompatActivity{
                 }else {
 
                     //SQL查詢指令
-                    String query = "select 簽到日期,出席狀況 from 出席紀錄 where 出席狀況 = '缺曠' and  學年度 ='" + year +"' and 學期 ='" + Semester + "' and 學生代號='" + UserID + "'";
+                    String query = "select 簽到日期,出席狀況 from 出席紀錄 where 簽到簽退 = '簽到' and  學年度 ='" + year +"' and 學期 ='" + Semester + "' and 學生代號='" + UserID + "'";
                     //DB資料取得
                     PreparedStatement ps = con.prepareStatement(query);
                     ResultSet rs = ps.executeQuery();
@@ -297,7 +297,7 @@ public class ShowMyAttendPage extends AppCompatActivity{
 
 
                     //SQL查詢指令
-                    String query = "select 簽到日期,出席狀況 from 出席紀錄 where 出席狀況 = '缺曠' and  學生代號 ='" + UserID + "' and 課程代號 ='" + ClassIDArea + "'";
+                    String query = "select 簽到日期,出席狀況 from 出席紀錄 where 簽到簽退 = '簽到'  and  學生代號 ='" + UserID + "' and 課程代號 ='" + ClassIDArea + "'";
                     //DB資料取得
                     PreparedStatement ps = con.prepareStatement(query);
                     ResultSet rs = ps.executeQuery();

@@ -27,9 +27,12 @@ import com.example.nqc_app.util.ConnectionClass;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -324,6 +327,7 @@ public class ShowMyAttendPageT extends AppCompatActivity{
     public class DBGetUserClassList extends AsyncTask<String,String,String> {
         String z = ""; //建立回報訊息變數
         Boolean isSuccess = false; //建立辨別成功變數
+        String ClockReCodeDay = new SimpleDateFormat("MMdd", Locale.ENGLISH).format(Calendar.getInstance().getTime());
         @Override
         protected void onPostExecute(String z){
             if(isSuccess){
@@ -348,7 +352,7 @@ public class ShowMyAttendPageT extends AppCompatActivity{
                     //SQL查詢指令
                     String query = "select 課程名稱,Count(課程編號) AS 到課人數,課程編號 " +
                             "from 課程資訊,出席紀錄" +
-                            " where 課程資訊.課程編號 = 出席紀錄.課程代號 and 出席紀錄.簽到簽退 ='簽到' and 出席紀錄.簽到日期 ='1130'  Group By 課程名稱,課程編號";
+                            " where 課程資訊.課程編號 = 出席紀錄.課程代號 and 出席紀錄.簽到簽退 ='簽到' and 出席紀錄.簽到日期 ='" + ClockReCodeDay  + "'  Group By 課程名稱,課程編號";
                     //DB資料取得
                     PreparedStatement ps = con.prepareStatement(query);
                     ResultSet rs = ps.executeQuery();
