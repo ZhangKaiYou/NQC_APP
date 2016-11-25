@@ -213,12 +213,26 @@ public class EditMyDataPage extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"請輸入正確的Email格式!",Toast.LENGTH_SHORT).show();
                         break;
                     }
+                    getEditData();
                     UpdateUserInfo updateUserInfo = new UpdateUserInfo();
                     updateUserInfo.execute("");
                     break;
             }
         }
     };
+
+    public void getEditData(){
+        UserName = edtEditMyDataName.getText().toString();
+        UserEmail = edtEditMyDataStudentEmail.getText().toString();
+        UserStatue = spnEditMyDataStatue.getSelectedItem().toString();
+        UserDepartment = spnEditMyDataDepartment.getSelectedItem().toString();
+        UserClass = edtEditMyDataClass.getText().toString();
+        if (rdbtnEditMyDataGender.getCheckedRadioButtonId() == (R.id.rdbtnEditMyDataMan)){
+            GenderText = "男";
+        }else if(rdbtnEditMyDataGender.getCheckedRadioButtonId() == (R.id.rdbtnEditMyDataWoman)){
+            GenderText = "女";
+        }
+    }
 
     public void DeleteOldUserData(){
         preferences.edit()
@@ -251,7 +265,6 @@ public class EditMyDataPage extends AppCompatActivity {
     public class UpdateUserInfo extends AsyncTask<String,String,String>{
         String z ="";
         Boolean isSuccess = false;
-
         @Override
         protected void onPostExecute(String r){
             Toast.makeText(EditMyDataPage.this,r, Toast.LENGTH_SHORT).show();

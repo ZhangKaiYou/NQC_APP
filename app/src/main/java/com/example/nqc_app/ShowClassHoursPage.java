@@ -162,6 +162,7 @@ public class ShowClassHoursPage extends AppCompatActivity {
                     DBGetClassHrsAll dbGetClassHrsAll = new DBGetClassHrsAll();
                     dbGetClassHrsAll.execute("");
                     txtShowClassHrsValue.setText("目前清單顯示狀態：顯示全部(分鐘)");
+                    txtShowClassHrs.setText("目前清單顯示狀態：顯示全部");
                     break;
             }
         }
